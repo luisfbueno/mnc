@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.gaussSeidel = new System.Windows.Forms.RadioButton();
             this.jacobi = new System.Windows.Forms.RadioButton();
@@ -40,7 +41,8 @@
             this.gaussPP = new System.Windows.Forms.RadioButton();
             this.gaussSimples = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.calc = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.reset = new System.Windows.Forms.Button();
             this.ordemSist = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.tolerancia = new System.Windows.Forms.TextBox();
@@ -50,14 +52,13 @@
             this.matAPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.vetBPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.vetXPanel = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ordemSist)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numItera)).BeginInit();
-            this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -187,7 +188,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.calc);
+            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.reset);
             this.groupBox2.Controls.Add(this.ordemSist);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.tolerancia);
@@ -199,16 +201,26 @@
             this.groupBox2.Size = new System.Drawing.Size(306, 148);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Dados para métodos iterativos";
+            this.groupBox2.Text = "Dados";
             // 
-            // calc
+            // button1
             // 
-            this.calc.Location = new System.Drawing.Point(216, 61);
-            this.calc.Name = "calc";
-            this.calc.Size = new System.Drawing.Size(75, 23);
-            this.calc.TabIndex = 7;
-            this.calc.Text = "Calcular";
-            this.calc.UseVisualStyleBackColor = true;
+            this.button1.Location = new System.Drawing.Point(225, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Calcular";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // reset
+            // 
+            this.reset.Location = new System.Drawing.Point(225, 50);
+            this.reset.Name = "reset";
+            this.reset.Size = new System.Drawing.Size(75, 23);
+            this.reset.TabIndex = 7;
+            this.reset.Text = "Reset";
+            this.reset.UseVisualStyleBackColor = true;
             // 
             // ordemSist
             // 
@@ -231,6 +243,7 @@
             0,
             0,
             0});
+            this.ordemSist.ValueChanged += new System.EventHandler(this.ordemSist_ValueChanged);
             // 
             // label1
             // 
@@ -243,7 +256,7 @@
             // 
             // tolerancia
             // 
-            this.tolerancia.Location = new System.Drawing.Point(127, 101);
+            this.tolerancia.Location = new System.Drawing.Point(127, 79);
             this.tolerancia.Name = "tolerancia";
             this.tolerancia.Size = new System.Drawing.Size(61, 20);
             this.tolerancia.TabIndex = 6;
@@ -251,7 +264,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 104);
+            this.label4.Location = new System.Drawing.Point(10, 82);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(63, 13);
             this.label4.TabIndex = 5;
@@ -259,7 +272,7 @@
             // 
             // numItera
             // 
-            this.numItera.Location = new System.Drawing.Point(127, 64);
+            this.numItera.Location = new System.Drawing.Point(127, 53);
             this.numItera.Minimum = new decimal(new int[] {
             10,
             0,
@@ -277,7 +290,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 66);
+            this.label3.Location = new System.Drawing.Point(10, 55);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(111, 13);
             this.label3.TabIndex = 3;
@@ -329,56 +342,79 @@
             this.label7.TabIndex = 3;
             this.label7.Text = "Vetor B";
             // 
-            // tabControl1
+            // vetBPanel
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(200, 100);
-            this.tabControl1.TabIndex = 4;
+            this.vetBPanel.ColumnCount = 10;
+            this.vetBPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetBPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetBPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetBPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetBPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetBPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetBPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetBPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetBPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetBPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetBPanel.Location = new System.Drawing.Point(12, 478);
+            this.vetBPanel.Name = "vetBPanel";
+            this.vetBPanel.RowCount = 1;
+            this.vetBPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.vetBPanel.Size = new System.Drawing.Size(675, 26);
+            this.vetBPanel.TabIndex = 4;
             // 
-            // tabPage1
+            // label8
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(192, 74);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(9, 521);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(90, 13);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "Vetor X (Solução)";
             // 
-            // tabPage2
+            // vetXPanel
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(192, 74);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.vetXPanel.ColumnCount = 10;
+            this.vetXPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetXPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetXPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetXPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetXPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetXPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetXPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetXPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetXPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetXPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.vetXPanel.Location = new System.Drawing.Point(12, 537);
+            this.vetXPanel.Name = "vetXPanel";
+            this.vetXPanel.RowCount = 1;
+            this.vetXPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.vetXPanel.Size = new System.Drawing.Size(675, 26);
+            this.vetXPanel.TabIndex = 6;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(699, 560);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(699, 582);
+            this.Controls.Add(this.vetXPanel);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.vetBPanel);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.matAPanel);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Sistemas Lineares";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ordemSist)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numItera)).EndInit();
-            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -404,13 +440,14 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RadioButton cholesky;
-        private System.Windows.Forms.Button calc;
+        private System.Windows.Forms.Button reset;
         private System.Windows.Forms.TableLayoutPanel matAPanel;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TableLayoutPanel vetBPanel;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TableLayoutPanel vetXPanel;
+        private System.Windows.Forms.Button button1;
     }
 }
 
