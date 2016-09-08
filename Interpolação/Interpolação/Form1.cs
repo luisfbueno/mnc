@@ -300,6 +300,21 @@ namespace Interpolação
             }
             textEqu.Text = polinomio;
         }
+//---------------------------------------------------------------------------------------------
+        private double calculaVal(double x)
+        {
+            double num = 0;
+            double multiplicador = 1;
+
+            for(int i = 0; i < nPontos.Value; i++)
+            {
+                num += multiplicador * valY[0, 1];
+                multiplicador *= (x - valX[i]);
+            }
+
+            return num;
+        }
+
 
 //FUNÇÕES DE INTERFACE 
         private void calc_Click(object sender, EventArgs e) 
@@ -327,6 +342,24 @@ namespace Interpolação
                 textEqu.Text = "";
             }
         }
+//----------------------------------------------------------------------------------------------
+        private void grafico_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < nPontos.Value; i++)
+            {
+                chart1.Series["Pontos Dados"].Points.AddXY(valX[i], valY[i,0]);
+            }
+
+
+            //chart1.Series["test1"].ChartType =
+            //SeriesChartType.FastLine;
+            chart1.Series["Pontos Dados"].Color = Color.Red;
+            /*
+            chart1.Series["test2"].ChartType =
+                                SeriesChartType.FastLine;
+            chart1.Series["test2"].Color = Color.Blue;*/
+        
+    }
 //----------------------------------------------------------------------------------------------
         private void nPontos_ValueChanged(object sender, EventArgs e)
         {
