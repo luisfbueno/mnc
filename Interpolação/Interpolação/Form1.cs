@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using info.lundin.math;
 
 namespace Interpolação
 {
@@ -16,6 +17,7 @@ namespace Interpolação
         TextBox[] x,y;
         double[] valX = new double[20];
         double[,] valY = new double[20,20];
+        ExpressionParser parser = new ExpressionParser(); 
 
         public Form1() 
         {
@@ -209,14 +211,14 @@ namespace Interpolação
             }
 
             //Monta o Polinômio
-            String polinomio = "P" + (n-1).ToString() + "(x) = ";
+            String polinomio = "";
             n = (int)nPontos.Value;
 
             for (i = 0; i < n-1; i++)
             {
                 if (i != 0)
                 {
-                    polinomio += "*{";
+                    polinomio += "*(";
                 }
 
                 polinomio += (valY[0, i]).ToString() + " + (x";
@@ -231,11 +233,11 @@ namespace Interpolação
 
             }
 
-            polinomio += "{" + valY[0, n - 1].ToString();
+            polinomio += "(" + valY[0, n - 1].ToString();
 
             for (i = 0; i < n - 1; i++)
             {
-                polinomio += "}";
+                polinomio += ")";
             }
             textEqu.Text = polinomio;
 
@@ -269,14 +271,14 @@ namespace Interpolação
             }
 
             // Monta o Polinômio
-            String polinomio = "P" + (n - 1).ToString() + "(x) = ";
+            String polinomio = "";
             n = (int)nPontos.Value;
 
             for (i = 0; i < n - 1; i++)
             {
                 if (i != 0)
                 {
-                    polinomio += "*{";
+                    polinomio += "*(";
                 }
 
                 polinomio += (valY[0, i]/(fatorial((double)i) * Math.Pow(dif,i))).ToString() + " + (x";
@@ -291,12 +293,12 @@ namespace Interpolação
 
             }
 
-            polinomio += "{" + (valY[0, n-1] / (fatorial((double)n-1) * Math.Pow(dif, i))).ToString();
+            polinomio += "(" + (valY[0, n-1] / (fatorial((double)n-1) * Math.Pow(dif, i))).ToString();
             //polinomio += "{" + (valY[0, n]).ToString() + "/" + (fatorial((double)n - 1) + Math.Pow(dif, i)).ToString();
 
             for (i = 0; i < n - 1; i++)
             {
-                polinomio += "}";
+                polinomio += ")";
             }
             textEqu.Text = polinomio;
         }
@@ -350,6 +352,13 @@ namespace Interpolação
                 chart1.Series["Pontos Dados"].Points.AddXY(valX[i], valY[i,0]);
             }
 
+            parser.Values.Add("x", 0);
+            for(double i = valX[0];i<=valX[(int)nPontos.Value - 1]; i += 0.5)
+            {
+                parser.Values["x"].SetValue(i);
+                double pontoY = parser.Parse(textEqu.Text);
+                chart1.Series["Gráfico da Função"].Points.AddXY(i, pontoY);
+            }
 
             //chart1.Series["test1"].ChartType =
             //SeriesChartType.FastLine;

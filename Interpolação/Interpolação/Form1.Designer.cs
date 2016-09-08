@@ -238,7 +238,7 @@
             this.chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(528, 23);
+            this.chart1.Location = new System.Drawing.Point(515, 12);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
@@ -251,7 +251,7 @@
             series2.Name = "Gráfico da Função";
             this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(300, 300);
+            this.chart1.Size = new System.Drawing.Size(625, 378);
             this.chart1.TabIndex = 10;
             this.chart1.Text = "chart1";
             // 
@@ -260,7 +260,7 @@
             this.AccessibleName = "";
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(838, 332);
+            this.ClientSize = new System.Drawing.Size(1152, 501);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.panelY);
             this.Controls.Add(this.label5);
