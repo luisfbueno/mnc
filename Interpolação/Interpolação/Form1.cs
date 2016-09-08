@@ -17,7 +17,6 @@ namespace Interpolação
         TextBox[] x,y;
         double[] valX = new double[20];
         double[,] valY = new double[20,20];
-        ExpressionParser parser = new ExpressionParser(); 
 
         public Form1() 
         {
@@ -345,30 +344,7 @@ namespace Interpolação
             }
         }
 //----------------------------------------------------------------------------------------------
-        private void grafico_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < nPontos.Value; i++)
-            {
-                chart1.Series["Pontos Dados"].Points.AddXY(valX[i], valY[i,0]);
-            }
-
-            parser.Values.Add("x", 0);
-            for(double i = valX[0];i<=valX[(int)nPontos.Value - 1]; i += 0.5)
-            {
-                parser.Values["x"].SetValue(i);
-                double pontoY = parser.Parse(textEqu.Text);
-                chart1.Series["Gráfico da Função"].Points.AddXY(i, pontoY);
-            }
-
-            //chart1.Series["test1"].ChartType =
-            //SeriesChartType.FastLine;
-            chart1.Series["Pontos Dados"].Color = Color.Red;
-            /*
-            chart1.Series["test2"].ChartType =
-                                SeriesChartType.FastLine;
-            chart1.Series["test2"].Color = Color.Blue;*/
-        
-    }
+ 
 //----------------------------------------------------------------------------------------------
         private void nPontos_ValueChanged(object sender, EventArgs e)
         {

@@ -28,17 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.newtonGregory = new System.Windows.Forms.RadioButton();
             this.newton = new System.Windows.Forms.RadioButton();
             this.sistLinear = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.grafico = new System.Windows.Forms.Button();
             this.calc = new System.Windows.Forms.Button();
             this.reset = new System.Windows.Forms.Button();
             this.nPontos = new System.Windows.Forms.NumericUpDown();
@@ -50,11 +45,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.panelY = new System.Windows.Forms.FlowLayoutPanel();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nPontos)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -104,7 +97,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.grafico);
             this.groupBox2.Controls.Add(this.calc);
             this.groupBox2.Controls.Add(this.reset);
             this.groupBox2.Controls.Add(this.nPontos);
@@ -116,19 +108,9 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dados";
             // 
-            // grafico
-            // 
-            this.grafico.Location = new System.Drawing.Point(10, 116);
-            this.grafico.Name = "grafico";
-            this.grafico.Size = new System.Drawing.Size(75, 23);
-            this.grafico.TabIndex = 7;
-            this.grafico.Text = "Grafico";
-            this.grafico.UseVisualStyleBackColor = true;
-            this.grafico.Click += new System.EventHandler(this.grafico_Click);
-            // 
             // calc
             // 
-            this.calc.Location = new System.Drawing.Point(131, 49);
+            this.calc.Location = new System.Drawing.Point(6, 107);
             this.calc.Name = "calc";
             this.calc.Size = new System.Drawing.Size(97, 37);
             this.calc.TabIndex = 1;
@@ -232,36 +214,12 @@
             this.panelY.TabIndex = 8;
             this.panelY.WrapContents = false;
             // 
-            // chart1
-            // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(515, 12);
-            this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series1.Legend = "Legend1";
-            series1.Name = "Pontos Dados";
-            series1.YValuesPerPoint = 2;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series2.Legend = "Legend1";
-            series2.Name = "Gráfico da Função";
-            this.chart1.Series.Add(series1);
-            this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(625, 378);
-            this.chart1.TabIndex = 10;
-            this.chart1.Text = "chart1";
-            // 
             // Form1
             // 
             this.AccessibleName = "";
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1152, 501);
-            this.Controls.Add(this.chart1);
+            this.ClientSize = new System.Drawing.Size(519, 325);
             this.Controls.Add(this.panelY);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -280,7 +238,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nPontos)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -304,8 +261,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.FlowLayoutPanel panelY;
         private System.Windows.Forms.HelpProvider helpProvider1;
-        private System.Windows.Forms.Button grafico;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
 
