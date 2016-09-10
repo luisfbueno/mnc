@@ -54,13 +54,13 @@ namespace Ajustes
                 panelPoli.Controls.Add(a[i]);
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 12; i++)
             {
                 x[i].Visible = true;
                 y[i].Visible = true;
             }
 
-
+            /*
             //Valores Simples para teste
             for (int i = 0; i < 4; i++)
             {
@@ -70,8 +70,8 @@ namespace Ajustes
             y[1].Text = "1";
             y[2].Text = "3,8";
             y[3].Text = "9";
-
-            /* TESTE AP SACOMAN
+            */
+            //TESTE AP SACOMAN
             //Valores de x e y para teste
             double aux = 1964;
             for(int i = 0; i < 12; i++)
@@ -79,7 +79,7 @@ namespace Ajustes
                 x[i].Text = aux.ToString();
                 aux++;
             }
-            /
+            
             y[0].Text = "0,95";
             y[1].Text = "1,15";
             y[2].Text = "1,17";
@@ -91,7 +91,7 @@ namespace Ajustes
             y[8].Text = "0,84";
             y[9].Text = "0,88";
             y[10].Text = "0,57";
-            y[11].Text = "0,84";*/
+            y[11].Text = "0,84";
         }
 
         private void gauss(int n, double[,] a, double[] b, ref double[] x)
@@ -187,7 +187,94 @@ namespace Ajustes
 
         }
 //-------------------------------------------------------------------------------
-        
+        private void minimosQuadradosComR(int curva)
+        {
+            int i, j;
+            double[] somatorioPotX = new double[15]; //Vetor que guarda os somatorios x(primeira posição guarda somatorio x^1)
+            double[] somatorioVetB = new double[7];
+            double[,] matrizCalc = new double[7, 7];
+            double[] vetCalc = new double[7];
+            double[] vetSol = new double[7];
+            double[] yOriginal = new double[20];
+
+            if (curva == 1)
+            {
+                for (i = 0; i < n; i++)
+                {
+                    yOriginal[i] = valY[i];
+                    valY[i] = Math.Log(valY[i]);
+                }
+            }
+
+            for (i = 0; i < m + m - 2; i++) //Calcula somatorios de x (vai até m+1 pois caso o grau seja 2 ele precisa calcular 
+            {
+                somatorioPotX[i] = 0;
+                for (j = 0; j < n; j++)
+                {
+                    somatorioPotX[i] += Math.Pow(valX[j], i + 1);
+                }
+                //MessageBox.Show("Somatório x^" + (i+1) + "=" + somatorioPotX[i]);
+            }
+
+            double sumY, sumX;
+
+            for (i = 0; i < m; i++) //Calcula Somatorios do vetor b
+            {
+                sumY = sumX = 0;
+                for (j = 0; j < n; j++)
+                {
+                    sumY = valY[j];
+                    sumX = Math.Pow(valX[j], i);
+                    somatorioVetB[i] += sumY * sumX;
+                }
+                //MessageBox.Show("Somatório x^" + (i + 1) + "*yi=" + somatorioVetB[i]);
+            }
+
+            for (i = 0; i < m; i++) //Monta a matriz do calculo
+            {
+                for (j = 0; j < m; j++)
+                {
+                    if (i == 0 && j == 0)
+                    {
+                        matrizCalc[i, j] = n;
+                    }
+                    else
+                    {
+                        matrizCalc[i, j] = somatorioPotX[i + j - 1];
+                    }
+                    //MessageBox.Show("Matriz A[" + i + j + "]=" + matrizCalc[i, j].ToString());
+                }
+            }
+
+            gauss(m, matrizCalc, somatorioVetB, ref vetSol);
+
+            if (curva == 0) //y = a + b*x
+            {
+                textA.Text = vetSol[0].ToString();
+                textB.Text = vetSol[1].ToString();
+            }
+
+            if(curva == 1) //y = a*b^x
+            {
+                double somaerro = 0,somayq = 0,somay=0;
+
+                for (i = 0; i < n; i++)
+                {
+                    somaerro += Math.Pow((yOriginal[i]-valY[i]), 2);
+                    somayq += Math.Pow(yOriginal[i],2);
+                    somay += yOriginal[i];
+                }
+
+                //double c = 1 - ((n * somaerro) / (n*somayq - Math.Pow(somay, 2)));
+
+                vetSol[0] = Math.Pow(Math.E, vetSol[0]);
+                vetSol[1] = Math.Pow(Math.E, vetSol[1]);
+                textA.Text = vetSol[0].ToString();
+                textB.Text = vetSol[1].ToString();
+                //textR.Text = c.ToString();
+            }
+
+        }
 
 //FUNCÕES DE INTERFACE
         private bool passaTextDouble()
@@ -207,6 +294,25 @@ namespace Ajustes
             }
 
             return true;
+        }
+//-------------------------------------------------------------------------------
+        private void curvasCalc_Click(object sender, EventArgs e)
+        {
+            if(comboBox1.SelectedIndex != -1)
+            {
+                m = 2;
+                n = (int)nPontos.Value;
+
+                if (!passaTextDouble())
+                {
+                    return;
+                }
+
+                minimosQuadradosComR(comboBox1.SelectedIndex);
+
+
+
+            }
         }
 //-------------------------------------------------------------------------------
         private void calcPoli_Click(object sender, EventArgs e)

@@ -45,9 +45,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.curvasCalc = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textR = new System.Windows.Forms.TextBox();
+            this.textB = new System.Windows.Forms.TextBox();
+            this.textA = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -124,7 +124,7 @@
             this.nPontos.Size = new System.Drawing.Size(58, 20);
             this.nPontos.TabIndex = 2;
             this.nPontos.Value = new decimal(new int[] {
-            4,
+            12,
             0,
             0,
             0});
@@ -232,9 +232,9 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.curvasCalc);
-            this.groupBox3.Controls.Add(this.textBox3);
-            this.groupBox3.Controls.Add(this.textBox2);
-            this.groupBox3.Controls.Add(this.textBox1);
+            this.groupBox3.Controls.Add(this.textR);
+            this.groupBox3.Controls.Add(this.textB);
+            this.groupBox3.Controls.Add(this.textA);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.label8);
@@ -255,27 +255,28 @@
             this.curvasCalc.TabIndex = 7;
             this.curvasCalc.Text = "Calcular";
             this.curvasCalc.UseVisualStyleBackColor = true;
+            this.curvasCalc.Click += new System.EventHandler(this.curvasCalc_Click);
             // 
-            // textBox3
+            // textR
             // 
-            this.textBox3.Location = new System.Drawing.Point(363, 87);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(120, 20);
-            this.textBox3.TabIndex = 7;
+            this.textR.Location = new System.Drawing.Point(363, 87);
+            this.textR.Name = "textR";
+            this.textR.Size = new System.Drawing.Size(120, 20);
+            this.textR.TabIndex = 7;
             // 
-            // textBox2
+            // textB
             // 
-            this.textBox2.Location = new System.Drawing.Point(189, 87);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(120, 20);
-            this.textBox2.TabIndex = 6;
+            this.textB.Location = new System.Drawing.Point(189, 87);
+            this.textB.Name = "textB";
+            this.textB.Size = new System.Drawing.Size(120, 20);
+            this.textB.TabIndex = 6;
             // 
-            // textBox1
+            // textA
             // 
-            this.textBox1.Location = new System.Drawing.Point(30, 87);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(120, 20);
-            this.textBox1.TabIndex = 5;
+            this.textA.Location = new System.Drawing.Point(30, 87);
+            this.textA.Name = "textA";
+            this.textA.Size = new System.Drawing.Size(120, 20);
+            this.textA.TabIndex = 5;
             // 
             // label10
             // 
@@ -307,7 +308,10 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(71, 45);
+            this.comboBox1.Items.AddRange(new object[] {
+            "y = a + b*x",
+            "y = a *b^x"});
+            this.comboBox1.Location = new System.Drawing.Point(71, 26);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(138, 21);
             this.comboBox1.TabIndex = 1;
@@ -315,7 +319,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(7, 48);
+            this.label7.Location = new System.Drawing.Point(7, 29);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(58, 13);
             this.label7.TabIndex = 0;
@@ -367,9 +371,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button calcPoli;
         private System.Windows.Forms.Button curvasCalc;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textR;
+        private System.Windows.Forms.TextBox textB;
+        private System.Windows.Forms.TextBox textA;
     }
 }
 
