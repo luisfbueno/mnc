@@ -101,8 +101,6 @@ namespace Sistemas
             ShowBoxesPanel((int)ordemSist.Value);
         }
 
-
-
         //FUNÇÕES DE CALCULO
         private void gauss()
         {
