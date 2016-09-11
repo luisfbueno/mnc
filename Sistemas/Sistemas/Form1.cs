@@ -47,7 +47,6 @@ namespace Sistemas
             gaussComp.Enabled = false;
             gaussPT.Enabled = false;
             gaussSeidel.Enabled = false;
-            lu.Enabled = false;
             jacobi.Enabled = false;
 
             ShowBoxesPanel(3);
@@ -245,8 +244,76 @@ namespace Sistemas
 //------------------------------------------------------------------------------
         private void metLU()
         {
+            double[,] L = new double[10,10];
+            double[,] U = new double[10, 10];
+            double[] y = new double[10];
+            int i, j, k;
+            int n = (int)ordemSist.Value;
+            double soma = 0;
+
+            passaTextDouble();
+            
+            for (k = 0;k< n; k++)
+            {
+                L[k, k] = 1;
+            }
+
+            for (i = 0; i < n; i++)
+            {
+                for (j = 0; j < n; j++)
+                {
+                    soma = 0;
+                    for (k = 0; k < i - 1; k++)
+                    {
+                        soma += L[i, k] * U[k, j];
+                    }
+                    U[i, j] = a[i, j] - soma;
+                    MessageBox.Show("u[" + i + j + "] =" + U[i, j]);
+                }
+                for (j = i + 1; j < n; j++)
+                {
+                    soma = 0;
+                    for (k = 0; k < i - 1; k++)
+                    {
+                        soma += L[j, k] * U[k, i];
+                    }
+                    L[j, i] = (a[j, i] - soma) / U[i, i];
+                    MessageBox.Show("l[" + j + i + "] =" + U[j, i]);
+                }
+            }
+
+                y[0] = b[0] / L[0, 0];
+                for (i = 1; i < n; i++)
+                {
+                    soma = 0;
+                    for (j = i - 1; j >= 0; j--)
+                    {
+                        soma += L[i, j] * y[j];
+                    }
+                    y[i] = (b[i] - soma) / L[i, i];
+                }
+
+                x[n - 1] = y[n - 1] / U[n - 1, n - 1];
+                for (i = n - 2; i >= 0; i--)
+                {
+                    soma = 0;
+                    for (j = i + 1; j < n; j++)
+                    {
+                        soma += U[i, j] * x[j];
+                    }
+                    x[i] = (y[i] - soma) / U[i, i];
+                    //vetX[i].Text = Math.Round(x[i]).ToString();
+                }
+
+                for (i = 0; i < n; i++)
+                {
+                    vetX[i].Text = x[i].ToString();
+                }
+
+            
 
         }
+//------------------------------------------------------------------------------
         private bool verificaDiagonalPrincipal(ref double[,] mat,ref double[] vet,int n) //Função que verifica se tem 0 na diagonal principal e efetua trocas
         {
             int linha, coluna,i,j,k;
@@ -353,8 +420,12 @@ namespace Sistemas
             {
                 metGaussPP();
             }
+            if (lu.Checked)
+            {
+                metLU();
+            }
         }
-
+//------------------------------------------------------------------------------
         private void reset_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < 10; i++)

@@ -94,6 +94,67 @@ namespace Ajustes
             y[11].Text = "0,84";
         }
 
+        private void cholesky(int n,double[,] a,double[] b,ref double[] x)
+        {
+
+            int i, j, k;
+            double[,] g = new double[20, 20];
+            double soma;
+            double[] y = new double[20];
+
+            
+            for (k = 0; k < n; k++) //Decompor A em G*Gt
+            {
+                soma = 0;
+                for (j = 0; j <= k - 1; j++)
+                {
+                    soma += Math.Pow(g[k, j], 2);
+                }
+                g[k, k] = Math.Sqrt(a[k, k] - soma);
+                for (i = k; i < n; i++)
+                {
+                    soma = 0;
+                    for (j = 0; j <= k - 1; j++)
+                    {
+                        soma += g[i, j] * g[k, j];
+                    }
+                    g[i, k] = (a[i, k] - soma) / g[k, k];
+                }
+            }
+
+            y[0] = b[0] / g[0, 0];
+            for (i = 1; i < n; i++)
+            {
+                soma = 0;
+                for (j = i - 1; j >= 0; j--)
+                {
+                    soma += g[i, j] * y[j];
+                }
+                y[i] = (b[i] - soma) / g[i, i];
+            }
+
+            for (i = 0; i < n; i++)
+            {
+                for (j = i + 1; j < n; j++)
+                {
+                    g[i, j] = g[j, i];
+                    g[j, i] = 0;
+                }
+            }
+
+            x[n - 1] = y[n - 1] / g[n - 1, n - 1];
+            for (i = n - 2; i >= 0; i--)
+            {
+                soma = 0;
+                for (j = i + 1; j < n; j++)
+                {
+                    soma += g[i, j] * x[j];
+                }
+                x[i] = (y[i] - soma) / g[i, i];
+            }
+
+        }
+//-------------------------------------------------------------------------------
         private void gauss(int n, double[,] a, double[] b, ref double[] x)
         {
             int i, j, k;
@@ -174,11 +235,12 @@ namespace Ajustes
                     {
                         matrizCalc[i, j] = somatorioPotX[i + j - 1];
                     }
-                    MessageBox.Show("Matriz A[" + i + j + "]=" + matrizCalc[i, j].ToString());
+                    //MessageBox.Show("Matriz A[" + i + j + "]=" + matrizCalc[i, j].ToString());
                 }
             }
 
-            gauss(m, matrizCalc, somatorioVetB, ref vetSol);
+            cholesky(m, matrizCalc, somatorioVetB, ref vetSol);
+            //gauss(m, matrizCalc, somatorioVetB, ref vetSol);
 
             for (i = 0; i < m; i++)
             {

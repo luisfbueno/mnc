@@ -158,10 +158,10 @@
             this.gaussPT.AutoSize = true;
             this.gaussPT.Location = new System.Drawing.Point(6, 84);
             this.gaussPT.Name = "gaussPT";
-            this.gaussPT.Size = new System.Drawing.Size(139, 17);
+            this.gaussPT.Size = new System.Drawing.Size(144, 17);
             this.gaussPT.TabIndex = 2;
             this.gaussPT.TabStop = true;
-            this.gaussPT.Text = "Gauss pivotamento total";
+            this.gaussPT.Text = "Gauss Pivotamento Total";
             this.gaussPT.UseVisualStyleBackColor = true;
             // 
             // gaussPP
@@ -169,10 +169,10 @@
             this.gaussPP.AutoSize = true;
             this.gaussPP.Location = new System.Drawing.Point(6, 61);
             this.gaussPP.Name = "gaussPP";
-            this.gaussPP.Size = new System.Drawing.Size(150, 17);
+            this.gaussPP.Size = new System.Drawing.Size(152, 17);
             this.gaussPP.TabIndex = 1;
             this.gaussPP.TabStop = true;
-            this.gaussPP.Text = "Gauss pivotamento parcial";
+            this.gaussPP.Text = "Gauss Pivotamento Parcial";
             this.gaussPP.UseVisualStyleBackColor = true;
             // 
             // gaussSimples
