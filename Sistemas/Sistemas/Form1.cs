@@ -66,10 +66,13 @@ namespace Sistemas
 
             for (j = 0; j < n - 1; j++)
             {
-                if (!verificaDiagonalPrincipal(ref a, ref b, n))
+                if (j != 0)
                 {
-                    MessageBox.Show("Ocorreu zero na diagonal principal e não foi possivel efetuar a troca!");
-                    return;
+                    if (!verificaDiagonalPrincipal(ref a, ref b, n))
+                    {
+                        MessageBox.Show("Ocorreu zero na diagonal principal e não foi possivel efetuar a troca!");
+                        return;
+                    }
                 }
                 for (i = j + 1; i < n; i++)
                 {
@@ -209,13 +212,11 @@ namespace Sistemas
                         MessageBox.Show("Troca linha com zero " + i.ToString() + "com linha" + linha.ToString());
                         for (j = 0; j < n; j++)
                         {
-                            //MessageBox.Show(a[i, j].ToString() + "<->" + a[linha, j].ToString());
                             aux = mat[i, j];
                             a[i, j] = a[linha, j];
                             a[linha, j] = aux;
                             
                         }
-                        //MessageBox.Show(b[i].ToString() + "<->" + b[linha].ToString());
                         aux = vet[i];
                         vet[i] = vet[linha];
                         vet[linha] = aux;
