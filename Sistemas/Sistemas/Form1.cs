@@ -45,7 +45,6 @@ namespace Sistemas
             }
 
             gaussComp.Enabled = false;
-            gaussPP.Enabled = false;
             gaussPT.Enabled = false;
             gaussSeidel.Enabled = false;
             lu.Enabled = false;
@@ -184,6 +183,66 @@ namespace Sistemas
 
         }
 //-----------------------------------------------------------------------------
+        private void metGaussPP()
+        {
+            int i, j, k;
+            double multiplicador, soma;
+            int n = (int)ordemSist.Value;
+
+            passaTextDouble();
+
+            for (j = 0; j < n - 1; j++)
+            {
+                int linhaMaximo = j;
+                for(int linha = j + 1; linha < n; linha++) //Verifica o maximo na coluna j
+                {
+                    if (a[linha, j] > a[linhaMaximo, j])
+                    {
+                        linhaMaximo = linha;
+                    }
+                }
+
+                if (linhaMaximo != j) //Se a linha do maximo for maior do que j,troca a linha j com a linha do valor maximo da coluna
+                {
+                    double aux = 0;
+                    for (int coluna = j; coluna < n; coluna++)
+                    {
+                        aux = a[j, coluna];
+                        a[j, coluna] = a[linhaMaximo, coluna];
+                        a[linhaMaximo, coluna] = aux;
+                    }
+                    aux = b[j];
+                    b[j] = b[linhaMaximo];
+                    b[linhaMaximo] = aux;
+                }
+
+                for (i = j + 1; i < n; i++)
+                {
+                    multiplicador = a[i, j] / a[j, j];
+                    for (k = j; k < n; k++)
+                    {
+                        //MessageBox.Show(a[i, k].ToString() + "-" + multiplicador.ToString() +"*"+ a[j, k].ToString());
+                        a[i, k] -= multiplicador * a[j, k];
+                    }
+                    b[i] -= multiplicador * b[j];
+                }
+            }
+
+            x[n - 1] = b[n - 1] / a[n - 1, n - 1];
+            vetX[n - 1].Text = x[n - 1].ToString();
+            for (i = n - 2; i >= 0; i--)
+            {
+                soma = 0;
+                for (j = i + i; j < n; j++)
+                {
+                    soma += a[i, j] * x[j];
+                }
+                x[i] = (b[i] - soma) / a[i, i];
+                vetX[i].Text = x[i].ToString();
+            }
+
+        }
+//------------------------------------------------------------------------------
         private bool verificaDiagonalPrincipal(ref double[,] mat,ref double[] vet,int n) //Função que verifica se tem 0 na diagonal principal e efetua trocas
         {
             int linha, coluna,i,j,k;
@@ -285,6 +344,10 @@ namespace Sistemas
             if (cholesky.Checked)
             {
                 metCholesky();
+            }
+            if (gaussPP.Checked)
+            {
+                metGaussPP();
             }
         }
 
