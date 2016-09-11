@@ -133,10 +133,10 @@ namespace Sistemas
                     soma += Math.Pow(g[k, j], 2);
                 }
                 g[k, k] = Math.Sqrt(a[k, k] - soma);
-                for (i = k + 1; i < n; i++)
+                for (i = k; i < n; i++)
                 {
                     soma = 0;
-                    for (j = 0; j < k - 1; j++)
+                    for (j = 0; j <= k - 1; j++)
                     {
                         soma += g[i, j] * g[k, j];
                     }
@@ -144,26 +144,26 @@ namespace Sistemas
                 }
             }
 
-            for (i = 0; i < n; i++)
-            {
-                for (j = i + 1; j < n; j++)
-                {
-                    g[i, j] = g[j, i];
-                }
-            }
-
             y[0] = b[0] / g[0, 0];
             for (i = 1; i < n; i++)
             {
                 soma = 0;
-                for (j = i-1; j >= 0; j--)
+                for (j = i - 1; j >= 0; j--)
                 {
                     soma += g[i, j] * y[j];
                 }
                 y[i] = (b[i] - soma) / g[i, i];
             }
 
-
+            for (i = 0; i < n; i++)
+            {
+                for (j = i + 1; j < n; j++)
+                {
+                    g[i, j] = g[j, i];
+                    g[j, i] = 0;
+                }
+            }
+       
             x[n - 1] = y[n - 1] / g[n - 1, n - 1];
             for (i = n - 2; i >= 0; i--)
             {
@@ -243,6 +243,10 @@ namespace Sistemas
 
         }
 //------------------------------------------------------------------------------
+        private void metLU()
+        {
+
+        }
         private bool verificaDiagonalPrincipal(ref double[,] mat,ref double[] vet,int n) //Função que verifica se tem 0 na diagonal principal e efetua trocas
         {
             int linha, coluna,i,j,k;
