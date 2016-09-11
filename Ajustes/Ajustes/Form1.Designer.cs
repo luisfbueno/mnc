@@ -309,8 +309,21 @@
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "y = a + b*x",
-            "y = a *b^x"});
+            "y = a +b*x",
+            "y = a*b^x",
+            "y = a*x^b",
+            "y = a*b^(e*x)",
+            "y = a*e^(b*x)",
+            "y = e^(a+b*x)",
+            "y=1/(a+b*x)",
+            "y=x/(a+b*x)",
+            "y=1/(1+e^(a+b*x))",
+            "y = 1 +a*e^(b*x)",
+            "y = a + b*ln(x)",
+            "y=a+b/x",
+            "y=a/(b+x)",
+            "y=a*b/(b+x)",
+            "y=a*x/(b+x)"});
             this.comboBox1.Location = new System.Drawing.Point(71, 26);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(138, 21);

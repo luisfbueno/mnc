@@ -221,6 +221,7 @@
             this.reset.TabIndex = 7;
             this.reset.Text = "Reset";
             this.reset.UseVisualStyleBackColor = true;
+            this.reset.Click += new System.EventHandler(this.reset_Click);
             // 
             // ordemSist
             // 
