@@ -13,11 +13,11 @@ namespace Ajustes
     public partial class Form1 : Form
     {
 
-        TextBox[] x, y,a;
+        TextBox[] x, y, a;
         double[] valX = new double[20];
         double[] valY = new double[20];
         private int m, n;
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -43,7 +43,7 @@ namespace Ajustes
 
             }
 
-            for(int i = 0; i < 7; i++)
+            for (int i = 0; i < 7; i++)
             {
                 a[i] = new TextBox();
                 if (i > 2)
@@ -74,12 +74,12 @@ namespace Ajustes
             //TESTE AP SACOMAN
             //Valores de x e y para teste
             double aux = 1964;
-            for(int i = 0; i < 12; i++)
+            for (int i = 0; i < 12; i++)
             {
                 x[i].Text = aux.ToString();
                 aux++;
             }
-            
+
             y[0].Text = "0,95";
             y[1].Text = "1,15";
             y[2].Text = "1,17";
@@ -92,9 +92,11 @@ namespace Ajustes
             y[9].Text = "0,88";
             y[10].Text = "0,57";
             y[11].Text = "0,84";
+
+            
         }
 
-        private void cholesky(int n,double[,] a,double[] b,ref double[] x)
+        private void cholesky(int n, double[,] a, double[] b, ref double[] x)
         {
 
             int i, j, k;
@@ -102,7 +104,7 @@ namespace Ajustes
             double soma;
             double[] y = new double[20];
 
-            
+
             for (k = 0; k < n; k++) //Decompor A em G*Gt
             {
                 soma = 0;
@@ -154,7 +156,7 @@ namespace Ajustes
             }
 
         }
-//-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
         private void gauss(int n, double[,] a, double[] b, ref double[] x)
         {
             int i, j, k;
@@ -189,17 +191,17 @@ namespace Ajustes
             }
 
         }
-//-------------------------------------------------------------------------------           
+        //-------------------------------------------------------------------------------           
         private void minimosQuadrados()
         {
-            int i,j;
+            int i, j;
             double[] somatorioPotX = new double[15]; //Vetor que guarda os somatorios x(primeira posição guarda somatorio x^1)
             double[] somatorioVetB = new double[7];
             double[,] matrizCalc = new double[7, 7];
             double[] vetCalc = new double[7];
             double[] vetSol = new double[7];
 
-            for (i = 0; i < m+m-2; i++) //Calcula somatorios de x (vai até m+1 pois caso o grau seja 2 ele precisa calcular 
+            for (i = 0; i < m + m - 2; i++) //Calcula somatorios de x (vai até m+1 pois caso o grau seja 2 ele precisa calcular 
             {
                 somatorioPotX[i] = 0;
                 for (j = 0; j < n; j++)
@@ -248,7 +250,7 @@ namespace Ajustes
             }
 
         }
-//-------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------
         private void minimosQuadradosComR(int curva)
         {
             int i, j;
@@ -258,6 +260,7 @@ namespace Ajustes
             double[] vetCalc = new double[7];
             double[] vetSol = new double[7];
             double[] yOriginal = new double[20];
+            double[] xOriginal = new double[20];
 
             #region Mudanças de valores de x e y
             if (curva == 1 || curva == 5) //y = a*b^x,y=e^(a+b*x)
@@ -273,6 +276,9 @@ namespace Ajustes
             {
                 for (i = 0; i < n; i++)
                 {
+                    yOriginal[i] = valY[i];
+                    valY[i] = Math.Log(valY[i]);
+                    xOriginal[i] = valX[i];
                     valX[i] = Math.Log(valX[i]);
                 }
             }
@@ -281,7 +287,9 @@ namespace Ajustes
             {
                 for (i = 0; i < n; i++)
                 {
+                    yOriginal[i] = valY[i];
                     valY[i] = Math.Log(valY[i]);
+                    xOriginal[i] = valX[i];
                     valX[i] = Math.E * valX[i];
                 }
             }
@@ -299,15 +307,18 @@ namespace Ajustes
             {
                 for (i = 0; i < n; i++)
                 {
+                    yOriginal[i] = valY[i];
                     valY[i] = 1 / valY[i];
                 }
             }
-           
+
             else if (curva == 7) //y=x/(a+b*x)
             {
                 for (i = 0; i < n; i++)
                 {
+                    yOriginal[i] = valY[i];
                     valY[i] = 1 / valY[i];
+                    xOriginal[i] = valX[i];
                     valX[i] = 1 / valX[i];
                 }
             }
@@ -316,7 +327,35 @@ namespace Ajustes
             {
                 for (i = 0; i < n; i++)
                 {
-                    valY[i] = (1 / valY[i]) - 1;
+                    yOriginal[i] = valY[i];
+                    valY[i] = Math.Log((1 / valY[i]) - 1);
+                }
+            }
+
+            else if (curva == 9)
+            {
+                for (i = 0; i < n; i++)
+                {
+                    yOriginal[i] = valY[i];
+                    valY[i] = Math.Log(valY[i] - 1);
+                }
+            }
+
+            else if (curva == 10) //y=a*x^b
+            {
+                for (i = 0; i < n; i++)
+                {
+                    xOriginal[i] = valX[i];
+                    valX[i] = Math.Log(valX[i]);
+                }
+            }
+
+            else if (curva == 11) //y=a+b/x
+            {
+                for (i = 0; i < n; i++)
+                {
+                    xOriginal[i] = valX[i];
+                    valX[i] = 1 / valX[i];
                 }
             }
 
@@ -365,47 +404,299 @@ namespace Ajustes
 
             gauss(m, matrizCalc, somatorioVetB, ref vetSol);
 
-            #region Cálculos de resultado
-            if (curva == 0 || curva == 5 || curva==6 || curva==8) //y = a + b*x,y=e^(a+b*x),y=1/(a+b*x),y=1/(1+e^(a+b*x))
+            #region Cálculos de resultado a e b
+
+            bool erro = false;
+
+            if (curva == 0 || curva == 5 || curva == 6 || curva == 8 || curva == 11) //y = a + b*x,y=e^(a+b*x),y=1/(a+b*x),y=1/(1+e^(a+b*x))
             {
                 textA.Text = vetSol[0].ToString();
                 textB.Text = vetSol[1].ToString();
             }
 
-            else if(curva == 1 || curva == 3) //y = a*b^x, y = a*b^(e*x)
+            else if (curva == 1 || curva == 3) //y = a*b^x, y = a*b^(e*x)
             {
-                /*double somaerro = 0,somayq = 0,somay=0;
-
-                for (i = 0; i < n; i++)
-                {
-                    somaerro += Math.Pow((yOriginal[i]-valY[i]), 2);
-                    somayq += Math.Pow(yOriginal[i],2);
-                    somay += yOriginal[i];
-                }
-
-                double c = 1 - ((n * somaerro) / (n*somayq - Math.Pow(somay, 2)));*/
-
                 vetSol[0] = Math.Pow(Math.E, vetSol[0]);
                 vetSol[1] = Math.Pow(Math.E, vetSol[1]);
                 textA.Text = vetSol[0].ToString();
                 textB.Text = vetSol[1].ToString();
-                //textR.Text = c.ToString();
             }
 
-            else if(curva == 2 || curva == 4) //y = a*x^b
+            else if (curva == 2 || curva == 4) //y = a*x^b
             {
                 vetSol[0] = Math.Pow(Math.E, vetSol[0]);
                 textA.Text = vetSol[0].ToString();
                 textB.Text = vetSol[1].ToString();
             }
 
-            else if(curva == 7) //y=x/(a+b*x)
+            else if (curva == 7) //y=x/(a+b*x)
             {
                 textB.Text = vetSol[0].ToString();
                 textA.Text = vetSol[1].ToString();
             }
 
+            else if (curva == 9)
+            {
+                vetSol[0] = Math.Pow(Math.E, vetSol[0]);
+                textA.Text = vetSol[0].ToString();
+                textB.Text = vetSol[1].ToString();
+            }
+
+            else if (curva == 10) //y = a+b*ln(x)
+            {
+                textA.Text = vetSol[0].ToString();
+                textB.Text = vetSol[1].ToString();
+            }
+
+            if (textA.Text == "NaN")
+            {
+                textA.Text = "Exceção!";
+                textB.Text = "";
+                textR.Text = "";
+                erro = true;
+            }
+            #endregion 
+
+            #region Coeficiente de determinação
+
+
+            if (!erro)
+            {
+
+                double c = 0;
+                if (curva == 0) //y=a+b*x
+                {
+                    double[] novoY = new double[20];
+
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = vetSol[0] + vetSol[1] * valX[i];
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - valY[i]), 2);
+                        somayq += Math.Pow(valY[i], 2);
+                        somay += valY[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+                }
+
+                else if (curva == 1)
+                {
+                    double[] novoY = new double[20];
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = vetSol[0] * Math.Pow(vetSol[1], valX[i]);
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - yOriginal[i]), 2);
+                        somayq += Math.Pow(yOriginal[i], 2);
+                        somay += yOriginal[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+
+                }
+
+                else if (curva == 2)
+                {
+                    double[] novoY = new double[20];
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = vetSol[0] * Math.Pow(xOriginal[i], vetSol[1]);
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - yOriginal[i]), 2);
+                        somayq += Math.Pow(yOriginal[i], 2);
+                        somay += yOriginal[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+
+                }
+
+                else if (curva == 3)
+                {
+                    double[] novoY = new double[20];
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = vetSol[0] * Math.Pow(vetSol[1], (xOriginal[i] * Math.E));
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - yOriginal[i]), 2);
+                        somayq += Math.Pow(yOriginal[i], 2);
+                        somay += yOriginal[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+                }
+
+                else if (curva == 4)
+                {
+                    double[] novoY = new double[20];
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = vetSol[0] * Math.Pow(Math.E, (vetSol[1] * valX[i]));
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - yOriginal[i]), 2);
+                        somayq += Math.Pow(yOriginal[i], 2);
+                        somay += yOriginal[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+                }
+                else if (curva == 5)
+                {
+                    double[] novoY = new double[20];
+
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = Math.Pow(Math.E, (vetSol[0] + vetSol[1] * valX[i]));
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - yOriginal[i]), 2);
+                        somayq += Math.Pow(yOriginal[i], 2);
+                        somay += yOriginal[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+                }
+                else if (curva == 6)
+                {
+                    double[] novoY = new double[20];
+
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = 1 / (vetSol[0] + valX[i] * vetSol[1]);
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - yOriginal[i]), 2);
+                        somayq += Math.Pow(yOriginal[i], 2);
+                        somay += yOriginal[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+                }
+
+                else if (curva == 7)
+                {
+                    double[] novoY = new double[20];
+
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = xOriginal[i] / (vetSol[1] + xOriginal[i] * vetSol[0]);
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - yOriginal[i]), 2);
+                        somayq += Math.Pow(yOriginal[i], 2);
+                        somay += yOriginal[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+                }
+
+                else if (curva == 8)
+                {
+                    double[] novoY = new double[20];
+
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = 1 / (1 + Math.Pow(Math.E, vetSol[0] + vetSol[1] * valX[i]));
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - yOriginal[i]), 2);
+                        somayq += Math.Pow(yOriginal[i], 2);
+                        somay += yOriginal[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+                }
+
+                else if (curva == 9)
+                {
+                    double[] novoY = new double[20];
+
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = 1 + vetSol[0] * Math.Pow(Math.E, vetSol[1] * valX[i]);
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - yOriginal[i]), 2);
+                        somayq += Math.Pow(yOriginal[i], 2);
+                        somay += yOriginal[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+                }
+
+                else if (curva == 10)
+                {
+                    double[] novoY = new double[20];
+
+                    for (i = 0; i < n; i++)
+                    {
+                        novoY[i] = vetSol[0] + vetSol[1] * Math.Log(xOriginal[i]);
+                    }
+
+                    double somaerro = 0, somayq = 0, somay = 0;
+
+                    for (i = 0; i < n; i++)
+                    {
+                        somaerro += Math.Pow((novoY[i] - valY[i]), 2);
+                        somayq += Math.Pow(valY[i], 2);
+                        somay += valY[i];
+                    }
+
+                    c = 1 - ((n * somaerro) / (n * somayq - Math.Pow(somay, 2)));
+                }
+                textR.Text = c.ToString();
+            }
+
+            
+
             #endregion
+
         }
 
         //FUNCÕES DE INTERFACE
@@ -415,7 +706,7 @@ namespace Ajustes
             {
                 if(x[i].Text == "" || y[i].Text == "")
                 {
-                    MessageBox.Show("Preencha todos os espaços!");
+                    MessageBox.Show("Preencha todos os espaços!","Erro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
 

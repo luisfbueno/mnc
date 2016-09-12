@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -37,8 +38,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.calcPoli = new System.Windows.Forms.Button();
-            this.coeficiente = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.panelPoli = new System.Windows.Forms.FlowLayoutPanel();
             this.grauPoli = new System.Windows.Forms.NumericUpDown();
@@ -142,8 +141,6 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.calcPoli);
-            this.groupBox2.Controls.Add(this.coeficiente);
-            this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.panelPoli);
             this.groupBox2.Controls.Add(this.grauPoli);
@@ -164,22 +161,6 @@
             this.calcPoli.Text = "Calcular";
             this.calcPoli.UseVisualStyleBackColor = true;
             this.calcPoli.Click += new System.EventHandler(this.calcPoli_Click);
-            // 
-            // coeficiente
-            // 
-            this.coeficiente.Location = new System.Drawing.Point(336, 22);
-            this.coeficiente.Name = "coeficiente";
-            this.coeficiente.Size = new System.Drawing.Size(171, 20);
-            this.coeficiente.TabIndex = 5;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(177, 25);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(153, 13);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "Coeficiente de rendimento: (R²)";
             // 
             // label5
             // 
@@ -319,11 +300,7 @@
             "y=x/(a+b*x)",
             "y=1/(1+e^(a+b*x))",
             "y = 1 +a*e^(b*x)",
-            "y = a + b*ln(x)",
-            "y=a+b/x",
-            "y=a/(b+x)",
-            "y=a*b/(b+x)",
-            "y=a*x/(b+x)"});
+            "y = a + b*ln(x)"});
             this.comboBox1.Location = new System.Drawing.Point(71, 26);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(138, 21);
@@ -346,6 +323,7 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Ajustes ";
             this.groupBox1.ResumeLayout(false);
@@ -374,8 +352,6 @@
         private System.Windows.Forms.NumericUpDown grauPoli;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox coeficiente;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;

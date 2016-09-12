@@ -45,6 +45,7 @@ namespace Sistemas
             }
 
             gaussComp.Enabled = false;
+            lu.Enabled = false;
             gaussPT.Enabled = false;
             gaussSeidel.Enabled = false;
             jacobi.Enabled = false;
@@ -68,7 +69,7 @@ namespace Sistemas
                 {
                     if (!verificaDiagonalPrincipal(ref a, ref b, n))
                     {
-                        MessageBox.Show("Ocorreu zero na diagonal principal e não foi possivel efetuar a troca!");
+                        MessageBox.Show("Ocorreu zero na diagonal principal e não foi possivel efetuar a troca!","Erro",MessageBoxButtons.OK,MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -118,7 +119,7 @@ namespace Sistemas
                 {
                     if (a[i, j] != a[j, i])
                     {
-                        MessageBox.Show("A matriz dada nao é simétrica! Não é possivel resolver por Cholesky");
+                        MessageBox.Show("A matriz dada nao é simétrica! Não é possivel resolver por Cholesky","Erro",MessageBoxButtons.OK,MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -339,7 +340,7 @@ namespace Sistemas
 
                     if (achou) //se achou, efetua troca
                     {
-                        MessageBox.Show("Troca linha com zero " + i.ToString() + "com linha" + linha.ToString());
+                        //MessageBox.Show("Troca linha com zero " + i.ToString() + "com linha" + linha.ToString());
                         for (j = 0; j < n; j++)
                         {
                             aux = mat[i, j];
@@ -367,11 +368,23 @@ namespace Sistemas
             int n = (int)ordemSist.Value;
             for (int i= 0; i < n; i++)
             {
+                if (vetB[i].Text == "")
+                {
+                    MessageBox.Show("Preencha todos os espaços!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 b[i] = double.Parse(vetB[i].Text);
                 for(int j = 0; j < n; j++)
                 {
                     a[i, j] = double.Parse(matA[i, j].Text);
+
+                    if (matA[i, j].Text == "")
+                    {
+                        MessageBox.Show("Preencha todos os espaços!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                 }
+                
             }
         }
 //-----------------------------------------------------------------------------  
