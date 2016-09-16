@@ -129,12 +129,10 @@ namespace Interpolação
 
         }
 //---------------------------------------------------------------------------------------------
-        private void sistLin()
+        private void sistLin(int n)
         {
-            passaTextValores(); //Passa valores dos Text x para valX e y para primeira coluna de valY
 
-            int i, j ,n;
-            n = (int)nPontos.Value;
+            int i, j;
             double[,] matA = new double[20,20]; //Matriz A para 
             double[] vetY = new double[20]; //Vator Y para resolução
             double[] vetX = new double[20]; //Vetor solução X para solucionar Gauss
@@ -192,13 +190,10 @@ namespace Interpolação
             }
         }
 //---------------------------------------------------------------------------------------------
-        private void metodoNewton()
+        private void metodoNewton(int n)
         {
-            int i,j,m,n;
-            n = (int)nPontos.Value;
+            int i,j,m;
             m = n;
-
-            passaTextValores(); //Pega os valores dos texts e passa para o vetor valX e a primeira coluna da matriz valY
 
             for (i = 1; i < n; i++) 
             {
@@ -242,11 +237,9 @@ namespace Interpolação
 
         }
 //---------------------------------------------------------------------------------------------
-        private void metodoNewtonGregory()
+        private void metodoNewtonGregory(int n)
         {
-            passaTextValores();
-
-            int n = (int)nPontos.Value;
+       
             int i, j,m;
             double dif = Math.Abs(valX[1] - valX[0]); //salva valor da diferença para verificar se os pontos são equidistantes 
             m = n-1;
@@ -320,17 +313,97 @@ namespace Interpolação
 //FUNÇÕES DE INTERFACE 
         private void calc_Click(object sender, EventArgs e) 
         {
+            int n = 0;
+
+            passaTextValores();
+
+            if((int)nPontos.Value == ((int)grauPoli.Value + 1)) //se o grau do polinomio for nPontos -1, n = grau
+            {
+                n = (int)nPontos.Value;
+            }
+
+            else if(nPontos.Value > grauPoli.Value) //Se houver mais pontos do que o grau pedido, diminuir vetor em volta do ponto de referencia dado
+            {
+
+                int k = (int)grauPoli.Value;
+                n = (int)nPontos.Value;
+                double[] vetDif = new double[20];
+                if (pRef.Text == "")
+                {
+                    MessageBox.Show("Preencha o valor do ponto de referência!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                double z = double.Parse(pRef.Text);
+
+                for (int i = 0; i < n; i++) //faz vetor de diferenças (x-z)
+                {
+                    vetDif[i] = Math.Abs(valX[i] - z);
+                }
+
+                //ordena vetor de diferenças por bubble sort, trocando também o vetor x e y
+                bool troca = true;
+                for (int i = 0; i < n - 1 && troca; i++)
+                {
+                    troca = false;
+                    for (int j = 0; j < n - i - 1; j++)
+                    {
+                        if (vetDif[j] > vetDif[j + 1])
+                        {
+                            troca = true;
+                            double aux = valX[j];
+                            valX[j] = valX[j + 1];
+                            valX[j + 1] = aux;
+
+                            aux = valY[j, 0];
+                            valY[j, 0] = valY[j + 1, 0];
+                            valY[j + 1, 0] = aux;
+
+                            aux = vetDif[j];
+                            vetDif[j] = vetDif[j + 1];
+                            vetDif[j + 1] = aux;
+
+                        }
+                    }
+                }
+
+                troca = true;
+                //ordena vetor x de menores diferenças por bubble sort
+                for (int i = 0; i < k && troca; i++)
+                {
+                    troca = false;
+                    for (int j = 0; j < k - i - 1; j++)
+                    {
+                        if (valX[j] > valX[j + 1])
+                        {
+                            troca = true;
+                            double aux = valX[j];
+                            valX[j] = valX[j + 1];
+                            valX[j + 1] = aux;
+
+                            aux = valY[j, 0];
+                            valY[j, 0] = valY[j + 1, 0];
+                            valY[j + 1, 0] = aux;
+                        }
+                    }
+
+                }
+
+                n = k; //define o grau do polinomio para k
+
+            }
+
+            //Executa o método selecionado
             if (sistLinear.Checked)
             {
-                sistLin();
+                sistLin(n);
             }
             else if (newton.Checked)
             {
-                metodoNewton();
+                metodoNewton(n);
             }
             else if (newtonGregory.Checked)
             {
-                metodoNewtonGregory();
+                metodoNewtonGregory(n);
             }
         }
 //----------------------------------------------------------------------------------------------

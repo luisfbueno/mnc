@@ -34,6 +34,10 @@
             this.newton = new System.Windows.Forms.RadioButton();
             this.sistLinear = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.pRef = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.grauPoli = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
             this.calc = new System.Windows.Forms.Button();
             this.reset = new System.Windows.Forms.Button();
             this.nPontos = new System.Windows.Forms.NumericUpDown();
@@ -47,6 +51,7 @@
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grauPoli)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nPontos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -97,6 +102,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.pRef);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.grauPoli);
+            this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.calc);
             this.groupBox2.Controls.Add(this.reset);
             this.groupBox2.Controls.Add(this.nPontos);
@@ -108,9 +117,56 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dados";
             // 
+            // pRef
+            // 
+            this.pRef.Location = new System.Drawing.Point(165, 75);
+            this.pRef.Name = "pRef";
+            this.pRef.Size = new System.Drawing.Size(63, 20);
+            this.pRef.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 82);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(146, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Ponto de referência(z,se k<n)";
+            // 
+            // grauPoli
+            // 
+            this.grauPoli.Location = new System.Drawing.Point(165, 48);
+            this.grauPoli.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.grauPoli.Minimum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.grauPoli.Name = "grauPoli";
+            this.grauPoli.Size = new System.Drawing.Size(63, 20);
+            this.grauPoli.TabIndex = 8;
+            this.grauPoli.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(7, 50);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(139, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Grau do polinômio(k,se k<n)";
+            // 
             // calc
             // 
-            this.calc.Location = new System.Drawing.Point(6, 107);
+            this.calc.Location = new System.Drawing.Point(6, 131);
             this.calc.Name = "calc";
             this.calc.Size = new System.Drawing.Size(97, 37);
             this.calc.TabIndex = 1;
@@ -121,7 +177,7 @@
             // reset
             // 
             this.helpProvider1.SetHelpString(this.reset, "Apaga todos os campos do programa");
-            this.reset.Location = new System.Drawing.Point(6, 49);
+            this.reset.Location = new System.Drawing.Point(131, 131);
             this.reset.Name = "reset";
             this.reset.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.helpProvider1.SetShowHelp(this.reset, true);
@@ -237,6 +293,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grauPoli)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nPontos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -261,6 +318,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.FlowLayoutPanel panelY;
         private System.Windows.Forms.HelpProvider helpProvider1;
+        private System.Windows.Forms.NumericUpDown grauPoli;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox pRef;
+        private System.Windows.Forms.Label label3;
     }
 }
 
