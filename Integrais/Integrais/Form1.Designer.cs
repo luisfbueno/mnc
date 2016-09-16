@@ -36,16 +36,16 @@
             this.rEsquerda = new System.Windows.Forms.RadioButton();
             this.trapezio = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.n = new System.Windows.Forms.TextBox();
-            this.b = new System.Windows.Forms.TextBox();
-            this.a = new System.Windows.Forms.TextBox();
+            this.valN = new System.Windows.Forms.TextBox();
+            this.valB = new System.Windows.Forms.TextBox();
+            this.valA = new System.Windows.Forms.TextBox();
             this.fx = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.solucao = new System.Windows.Forms.TextBox();
             this.calc = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -135,9 +135,9 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.n);
-            this.groupBox2.Controls.Add(this.b);
-            this.groupBox2.Controls.Add(this.a);
+            this.groupBox2.Controls.Add(this.valN);
+            this.groupBox2.Controls.Add(this.valB);
+            this.groupBox2.Controls.Add(this.valA);
             this.groupBox2.Controls.Add(this.fx);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label3);
@@ -150,26 +150,26 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dados";
             // 
-            // n
+            // valN
             // 
-            this.n.Location = new System.Drawing.Point(214, 54);
-            this.n.Name = "n";
-            this.n.Size = new System.Drawing.Size(77, 20);
-            this.n.TabIndex = 7;
+            this.valN.Location = new System.Drawing.Point(214, 54);
+            this.valN.Name = "valN";
+            this.valN.Size = new System.Drawing.Size(77, 20);
+            this.valN.TabIndex = 7;
             // 
-            // b
+            // valB
             // 
-            this.b.Location = new System.Drawing.Point(120, 54);
-            this.b.Name = "b";
-            this.b.Size = new System.Drawing.Size(69, 20);
-            this.b.TabIndex = 6;
+            this.valB.Location = new System.Drawing.Point(120, 54);
+            this.valB.Name = "valB";
+            this.valB.Size = new System.Drawing.Size(69, 20);
+            this.valB.TabIndex = 6;
             // 
-            // a
+            // valA
             // 
-            this.a.Location = new System.Drawing.Point(26, 54);
-            this.a.Name = "a";
-            this.a.Size = new System.Drawing.Size(69, 20);
-            this.a.TabIndex = 5;
+            this.valA.Location = new System.Drawing.Point(26, 54);
+            this.valA.Name = "valA";
+            this.valA.Size = new System.Drawing.Size(69, 20);
+            this.valA.TabIndex = 5;
             // 
             // fx
             // 
@@ -216,7 +216,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.textBox1);
+            this.groupBox3.Controls.Add(this.solucao);
             this.groupBox3.Location = new System.Drawing.Point(13, 244);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(297, 46);
@@ -224,12 +224,12 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Solução";
             // 
-            // textBox1
+            // solucao
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 19);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(284, 20);
-            this.textBox1.TabIndex = 0;
+            this.solucao.Location = new System.Drawing.Point(6, 19);
+            this.solucao.Name = "solucao";
+            this.solucao.Size = new System.Drawing.Size(284, 20);
+            this.solucao.TabIndex = 0;
             // 
             // calc
             // 
@@ -272,16 +272,16 @@
         private System.Windows.Forms.RadioButton rEsquerda;
         private System.Windows.Forms.RadioButton trapezio;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox n;
-        private System.Windows.Forms.TextBox b;
-        private System.Windows.Forms.TextBox a;
+        private System.Windows.Forms.TextBox valN;
+        private System.Windows.Forms.TextBox valB;
+        private System.Windows.Forms.TextBox valA;
         private System.Windows.Forms.TextBox fx;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox solucao;
         private System.Windows.Forms.Button calc;
     }
 }
