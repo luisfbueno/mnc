@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.quadGauss = new System.Windows.Forms.RadioButton();
             this.oitavoSimpson = new System.Windows.Forms.RadioButton();
@@ -47,6 +48,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.solucao = new System.Windows.Forms.TextBox();
             this.calc = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -217,7 +219,7 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.solucao);
-            this.groupBox3.Location = new System.Drawing.Point(13, 244);
+            this.groupBox3.Location = new System.Drawing.Point(12, 273);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(297, 46);
             this.groupBox3.TabIndex = 2;
@@ -241,15 +243,27 @@
             this.calc.UseVisualStyleBackColor = true;
             this.calc.Click += new System.EventHandler(this.calc_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 244);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(297, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Grafico";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 296);
+            this.ClientSize = new System.Drawing.Size(319, 326);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.calc);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Integrais";
             this.groupBox1.ResumeLayout(false);
@@ -283,6 +297,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox solucao;
         private System.Windows.Forms.Button calc;
+        private System.Windows.Forms.Button button1;
     }
 }
 

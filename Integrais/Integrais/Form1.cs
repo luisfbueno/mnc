@@ -48,7 +48,16 @@ namespace Integrais
 
             double resu = h * somatorio;
 
-            solucao.Text = resu.ToString();
+            if (Double.IsInfinity(resu) || double.IsNaN(resu))
+            {
+                MessageBox.Show("Ocorreu indeterminação durante os cálculos! Reveja os valores", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                solucao.Text = "Indeterminação!";
+                return;
+            }
+            else
+            {
+                solucao.Text = resu.ToString();
+            }
         }
 //------------------------------------------------------------------
         private void MetodoRetanguloDireita()
@@ -69,7 +78,16 @@ namespace Integrais
 
             double resu = h * somatorio;
 
-            solucao.Text = resu.ToString();
+            if (Double.IsInfinity(resu) || double.IsNaN(resu))
+            {
+                MessageBox.Show("Ocorreu indeterminação durante os cálculos! Reveja os valores", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                solucao.Text = "Indeterminação!";
+                return;
+            }
+            else
+            {
+                solucao.Text = resu.ToString();
+            }
         }
 //------------------------------------------------------------------
         private void MetodoTrapezio()
@@ -81,25 +99,30 @@ namespace Integrais
 
             parser.Values.Add("x", a);
             double fzero = parser.Parse(func);
-            MessageBox.Show("Fzero = " + fzero);
 
             double somatorio = 0;
             while (x < b)
             {
                 parser.Values["x"].SetValue(x);
                 somatorio += parser.Parse(func);
-                MessageBox.Show(parser.Parse(func).ToString());
                 x += h;
             }
 
             parser.Values["x"].SetValue(b);
             double fn = parser.Parse(func);
 
-            MessageBox.Show("Fzero = " + fn);
-
             double resu = (h / 2) * (fzero + fn + 2 * somatorio);
 
-            solucao.Text = resu.ToString();
+            if (Double.IsInfinity(resu) || double.IsNaN(resu))
+            {
+                MessageBox.Show("Ocorreu indeterminação durante os cálculos! Reveja os valores", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                solucao.Text = "Indeterminação!";
+                return;
+            }
+            else
+            {
+                solucao.Text = resu.ToString();
+            }
 
         }
 //------------------------------------------------------------------
@@ -141,7 +164,16 @@ namespace Integrais
 
                 double resu = (h / 3) * (fzero + fn + (4 * somatorioImpar) + (2 * somatorioPar));
 
-                solucao.Text = resu.ToString();
+                if (Double.IsInfinity(resu) || double.IsNaN(resu))
+                {
+                    MessageBox.Show("Ocorreu indeterminação durante os cálculos! Reveja os valores", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    solucao.Text = "Indeterminação!";
+                    return;
+                }
+                else
+                {
+                    solucao.Text = resu.ToString();
+                }
 
             }
 
@@ -194,8 +226,17 @@ namespace Integrais
 
                 double resuTrapezio = (h / 2) * (fm + fb);
 
-                double resuFinal = resuTrapezio + resuSimpson;
-                solucao.Text = resuFinal.ToString();
+                double resu = resuTrapezio + resuSimpson;
+                if (Double.IsInfinity(resu) || Double.IsNaN(resu))
+                {
+                    MessageBox.Show("Ocorreu indeterminação durante os cálculos! Reveja os valores", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    solucao.Text = "Indeterminação!";
+                    return;
+                }
+                else
+                {
+                    solucao.Text = resu.ToString();
+                }
 
 
             }
@@ -207,24 +248,62 @@ namespace Integrais
         {
             ExpressionParser parser = new ExpressionParser();
 
-            if(n%3 == 0)
+            if (n % 3 != 0) //Se n não for múltiplo de 3, multiplica ele por 3
             {
-                double h = (b - a) / 2;
+                n *= 3;
+            }
 
-                parser.Values.Add("x", a);
-                double fzero = parser.Parse(func);
-                double x = a + h;
+            double h = (b - a) / n;
 
-                
+            parser.Values.Add("x", a);
+            double fzero = parser.Parse(func);
+            double x = a + h;
 
+            double somatorioMultiplo = 0;
+            double somatorioNaoMultiplo = 0;
 
+            for(int i = 1; i < n; i++)
+            {
+                parser.Values["x"].SetValue(x);
+
+                if (i % 3 == 0)
+                {
+                somatorioMultiplo += parser.Parse(func);
+                }
+
+                else
+                {
+                    somatorioNaoMultiplo += parser.Parse(func);
+                }
+
+                x += h;
 
             }
 
+            parser.Values["x"].SetValue(b);
+            double fn = parser.Parse(func);
 
+            double resu = ((3 * h) / 8) * (fzero + 3 * somatorioNaoMultiplo + 2 * somatorioMultiplo + fn);
+
+            if(Double.IsInfinity(resu) || double.IsNaN(resu))
+            {
+                MessageBox.Show("Ocorreu indeterminação durante os cálculos! Reveja os valores", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                solucao.Text = "Indeterminação!";
+                return;
+            }
+            else
+            {
+                solucao.Text = resu.ToString();
+            }
+                
         }
 
-//FUNÇÕES DE INTERFACE
+        //FUNÇÕES DE INTERFACE
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("A ser implementado!");
+        }
+//--------------------------------------------------------------------
         private bool PassaTextDouble()
         {
 
@@ -243,13 +322,13 @@ namespace Integrais
 
             return true;
         }
- //--------------------------------------------------------------------
+//--------------------------------------------------------------------
         private void calc_Click(object sender, EventArgs e)
         {
 
             if (!PassaTextDouble())
             {
-                MessageBox.Show("Preencha todos os espaços!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Algum espaço esta vazio ou um dado é inválido!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //MessageBox.Show(n.ToString());
                 return;
             }
@@ -272,6 +351,10 @@ namespace Integrais
             if (tercoSimpson.Checked)
             {
                 MetodoTercoSimpson();
+            }
+            if (oitavoSimpson.Checked)
+            {
+                MetodoOitavoSimpson();
             }
 
         }

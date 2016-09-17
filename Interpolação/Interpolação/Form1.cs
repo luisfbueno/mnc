@@ -88,7 +88,7 @@ namespace Interpolação
 
             newton.Checked = true;
 
-            MessageBox.Show("Todos os métodos do programa funcionam, porém ainda não é possivel calcular a expressão para grau menor que n (a ser implementado)");
+            MessageBox.Show("Versão 3: \n-Agora é possível calcular o polinômio para graus menores do que (Pontos - 1)");
 
         } 
  
@@ -392,6 +392,12 @@ namespace Interpolação
 
             }
 
+            else if(grauPoli.Value >= nPontos.Value)
+            {
+                MessageBox.Show("Número de pontos insuficiente para calcular o polinomio de grau desejado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             //Executa o método selecionado
             if (sistLinear.Checked)
             {
@@ -416,8 +422,6 @@ namespace Interpolação
                 textEqu.Text = "";
             }
         }
-//----------------------------------------------------------------------------------------------
- 
 //----------------------------------------------------------------------------------------------
         private void nPontos_ValueChanged(object sender, EventArgs e)
         {
