@@ -301,7 +301,15 @@ namespace Integrais
         //FUNÇÕES DE INTERFACE
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("A ser implementado!");
+            if (!PassaTextDouble())
+            {
+                MessageBox.Show("Algum espaço esta vazio ou um dado é inválido!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(n.ToString());
+                return;
+            }
+
+            Grafico g = new Grafico(func, a, b);
+            g.Show();
         }
 //--------------------------------------------------------------------
         private bool PassaTextDouble()
