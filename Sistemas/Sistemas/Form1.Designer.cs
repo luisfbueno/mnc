@@ -232,7 +232,7 @@
             0,
             0});
             this.ordemSist.Minimum = new decimal(new int[] {
-            3,
+            2,
             0,
             0,
             0});

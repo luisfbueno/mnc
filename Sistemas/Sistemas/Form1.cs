@@ -77,7 +77,7 @@ namespace Sistemas
                     multiplicador = a[i, j] / a[j, j];
                     for (k = j; k < n; k++)
                     {
-                        //MessageBox.Show(a[i, k].ToString() + "-" + multiplicador.ToString() +"*"+ a[j, k].ToString());
+                        MessageBox.Show(a[i, k].ToString() + "-" + multiplicador.ToString() +"*"+ a[j, k].ToString());
                         a[i, k] -= multiplicador * a[j, k];
                     }
                     b[i] -= multiplicador * b[j];
@@ -247,7 +247,7 @@ namespace Sistemas
             double[,] L = new double[10,10];
             double[,] U = new double[10, 10];
             double[] y = new double[10];
-            int i, j, k;
+            int i, j=0, k;
             int n = (int)ordemSist.Value;
             double soma = 0;
 

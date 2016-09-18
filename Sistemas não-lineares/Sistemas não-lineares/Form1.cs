@@ -57,14 +57,17 @@ namespace Sistemas_não_lineares
                 tabelaPontos.Controls.Add(fxifinal[i-1], 4, i);
             }
 
-            ordemSist.Value = 2;
+            ordemSist.Value = 3;
 
-            fxi[0].Text = "(x1)^2 + (x2)^2 - 1";
-            fxi[1].Text = "(x1)*(x2)";
-            xi[0].Text = "0,5";
-            xi[1].Text = "0,1";
+            fxi[0].Text = "sin(x1) + x2^2 + ln(x3) - 7";
+            fxi[1].Text = "3*x1 + 2^x2 - x3^3 + 1";
+            fxi[2].Text = "x1 + x2 + x3 - 5";
+            xi[0].Text = "1";
+            xi[1].Text = "1";
+            xi[2].Text = "1";
             epsilon.Text = "0,01";
 
+            newton.Checked = true;
         }
 
 
@@ -75,17 +78,29 @@ namespace Sistemas_não_lineares
 
             for (j = 0; j < n - 1; j++)
             {
+                if (j != 0)
+                {
+                    if (!verificaDiagonalPrincipal(ref a, ref b, n))
+                    {
+                        MessageBox.Show("Ocorreu zero na diagonal principal e não foi possivel efetuar a troca!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
                 for (i = j + 1; i < n; i++)
                 {
                     multiplicador = a[i, j] / a[j, j];
+                    //multiplicador = Math.Round(multiplicador, 5);
                     for (k = j; k < n; k++)
                     {
+                       // MessageBox.Show(a[i, k].ToString() + "-" + multiplicador.ToString() + "*" + a[j, k].ToString());
                         a[i, k] -= multiplicador * a[j, k];
-                        MessageBox.Show("a[" + i.ToString() + "," + k.ToString() + "] = " + a[i, k]);
+                        // a[i, k] = Math.Round(a[i, k], 5);
+                        
                     }
 
                     b[i] -= multiplicador * b[j];
-                    MessageBox.Show("b[" + i.ToString() + "] = " + b[i]);
+                    //b[i] = Math.Round(b[i], 5);
+                    //MessageBox.Show("b[" + i.ToString() + "] = " + b[i]);
                 }
 
             }
@@ -98,6 +113,7 @@ namespace Sistemas_não_lineares
                 {
                     soma += a[i, j] * x[j];
                 }
+                //soma = Math.Round(soma, 5);
                 x[i] = (b[i] - soma) / a[i, i];
             }
 
@@ -150,43 +166,211 @@ namespace Sistemas_não_lineares
             return d;
         }
 //---------------------------------------------------------------------------------
+        private bool verificaDiagonalPrincipal(ref double[,] mat, ref double[] vet, int n) //Função que verifica se tem 0 na diagonal principal e efetua trocas
+        {
+            int linha, coluna, i, j, k;
+            bool achou = false, zero = false;
+            double aux;
+
+            for (i = 0; i < n; i++)
+            {
+                if (mat[i, i] == 0) //caso haja 0 na diagonal principal, procura
+                {
+                    zero = true; //bool para achou zero (caso nao seja possivel a troca, o algoritmo retornará que nao é possivel resolver)
+                    linha = i + 1;
+                    coluna = i;
+
+                    for (k = linha; k < n && !achou; k++)
+                    {
+                        if (mat[k, coluna] != 0) //procura numero diferente de 0 na coluna
+                        {
+                            achou = true;
+                            linha = k;
+                        }
+                    }
+
+                    if (achou) //se achou, efetua troca
+                    {
+                        //MessageBox.Show("Troca linha com zero " + i.ToString() + "com linha" + linha.ToString());
+                        for (j = 0; j < n; j++)
+                        {
+                            aux = mat[i, j];
+                            mat[i, j] = mat[linha, j];
+                            mat[linha, j] = aux;
+
+                        }
+                        aux = vet[i];
+                        vet[i] = vet[linha];
+                        vet[linha] = aux;
+                    }
+                }
+
+            }
+            if (zero && !achou)
+                return false;
+            else
+                return true;
+        }
+//---------------------------------------------------------------------------------
         private void Newton(int n)
         {
             double[,] jacobiano = new double[10, 10];
             double[] F = new double[10];
-            //double parada = 1;
-            //double cont = 1;
+            double parada = 1;
+            double cont = 0;
+            double[] h = new double[10];
             double[] x = new double[10];
+            double[] xk = new double[10];
+            double[] dif = new double[10];
+            double[] moduloxk = new double[10];
 
-            for(int i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
             {
                 x[i] = vetX[i];
             }
 
-           // while(parada>eps && cont <= it)
-           // {
+           while(Math.Abs(parada)>eps && cont < it)
+           {
+
+                for (int i= 0;i< n; i++) //Zerar vetor h para nao ocorrerem erros de calculo
+                {
+                    h[i] = 0;
+                }
 
                 for(int i = 0; i < n; i++) //Calcula vetor F de valores das funções
                 {
-                    F[i] = parser.Parse(vetFx[i]);
-                MessageBox.Show("f[" + i +"] = " + F[i]);
-            }
+                    F[i] = - parser.Parse(vetFx[i]);
+                    F[i] = Math.Round(F[i], 5);
+                   // MessageBox.Show("f" + i +" = " + F[i]);
+                }
 
                 for(int i = 0; i < n; i++) //Calcula matriz Jacobiana
                 {
                     for(int j = 0; j < n; j++)
                     {
-                        jacobiano[i, j] = DerivadaParcial(vetFx[i],vetX,j);
-                        MessageBox.Show("j[" + i + "," + j + "]=" + jacobiano[i, j]);
+                        jacobiano[i, j] = DerivadaParcial(vetFx[i],x,j);
+                        jacobiano[i, j] = Math.Round(jacobiano[i, j], 5);
+                       // MessageBox.Show("j" + i + j + " = " + jacobiano[i, j]);
                     }
                 }
 
-                //gauss(n, jacobiano, F, ref x);
+                gauss(n, jacobiano, F, ref h); //Resolve o sistema
 
+                for(int i = 0; i < n; i++)
+                {
+                    h[i] = Math.Round(h[i], 5);
+                    //MessageBox.Show("h+" + i + "= " + h[i]);
+                    xk[i] = x[i] + h[i];
+                    moduloxk[i] = Math.Abs(x[i] + h[i]);
+                    dif[i] = Math.Abs(xk[i] - x[i]);
+                }
 
+                parada = dif.Max();
 
-                //cont++;
-            //}
+              
+                for (int i = 0; i < n; i++) //salva vetor calculado em x para comparação posterior
+                {
+                    x[i] = xk[i];
+                    parser.Values["x" + (i + 1)].SetValue(x[i]);
+                }
+
+                cont++;
+            }
+
+            for(int i = 0; i < n; i++)
+            {
+                parser.Values["x" + (i + 1)].SetValue(x[i]);    
+            }
+
+            for (int i = 0;i< n; i++)
+            {
+                xifinal[i].Text = x[i].ToString();
+                double resu = parser.Parse(vetFx[i]);
+                fxifinal[i].Text = resu.ToString();
+            }
+
+            MessageBox.Show("Iterações = " + cont.ToString());
+
+        }
+//---------------------------------------------------------------------------------
+        private void NewtonModificado(int n)
+        {
+            double[,] jacobiano = new double[10, 10];
+            double[] F = new double[10];
+            double parada = 1;
+            double cont = 0;
+            double[] h = new double[10];
+            double[] x = new double[10];
+            double[] xk = new double[10];
+            double[] dif = new double[10];
+            double[] moduloxk = new double[10];
+
+            for (int i = 0; i < n; i++)
+            {
+                x[i] = vetX[i];
+            }
+
+ 
+            for (int i = 0; i < n; i++) //Calcula matriz Jacobiana a ser usada em todos os métodos
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    jacobiano[i, j] = DerivadaParcial(vetFx[i], x, j);
+                    jacobiano[i, j] = Math.Round(jacobiano[i, j], 5);
+                    // MessageBox.Show("j" + i + j + " = " + jacobiano[i, j]);
+                }
+            }
+
+            while (Math.Abs(parada) > eps && cont < it)
+            {
+
+                for (int i = 0; i < n; i++) //Zerar vetor h para nao ocorrerem erros de calculo
+                {
+                    h[i] = 0;
+                }
+
+                for (int i = 0; i < n; i++) //Calcula vetor F de valores das funções
+                {
+                    F[i] = -parser.Parse(vetFx[i]);
+                    F[i] = Math.Round(F[i], 5);
+                    // MessageBox.Show("f" + i +" = " + F[i]);
+                }
+
+                gauss(n, jacobiano, F, ref h); //Resolve o sistema
+
+                for (int i = 0; i < n; i++)
+                {
+                    h[i] = Math.Round(h[i], 5);
+                    //MessageBox.Show("h+" + i + "= " + h[i]);
+                    xk[i] = x[i] + h[i];
+                    moduloxk[i] = Math.Abs(x[i] + h[i]);
+                    dif[i] = Math.Abs(xk[i] - x[i]);
+                }
+
+                parada = dif.Max();
+
+                for (int i = 0; i < n; i++) //salva vetor calculado em x para comparação posterior
+                {
+                    x[i] = xk[i];
+                    parser.Values["x" + (i + 1)].SetValue(x[i]);
+                }
+
+                cont++;
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                parser.Values["x" + (i + 1)].SetValue(x[i]);
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                xifinal[i].Text = x[i].ToString();
+                double resu = parser.Parse(vetFx[i]);
+                fxifinal[i].Text = resu.ToString();
+            }
+
+            MessageBox.Show("Iterações = " + cont.ToString());
 
         }
 
@@ -215,6 +399,7 @@ namespace Sistemas_não_lineares
 //----------------------------------------------------------------------------------
         private void calc_Click(object sender, EventArgs e)
         {
+
             int n = (int)ordemSist.Value;
 
             for(int i = 0; i < n; i++)
@@ -230,14 +415,17 @@ namespace Sistemas_não_lineares
             }
 
             eps = Double.Parse(epsilon.Text);
-            if(eps<0.0001 || eps > 0.01)
+            if(eps<0.0001 || eps > 0.1)
             {
                 MessageBox.Show("Coloque um valor válido para epsilon!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             it = (int)iteracoes.Value;
 
-            Newton(n);
+            if (newton.Checked)
+                Newton(n);
+            else
+                NewtonModificado(n);
         }
 
 
