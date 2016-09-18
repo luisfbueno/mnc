@@ -34,6 +34,7 @@
             this.newton = new System.Windows.Forms.RadioButton();
             this.sistLinear = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.grafico = new System.Windows.Forms.Button();
             this.pRef = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.grauPoli = new System.Windows.Forms.NumericUpDown();
@@ -102,6 +103,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.grafico);
             this.groupBox2.Controls.Add(this.pRef);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.grauPoli);
@@ -116,6 +118,19 @@
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dados";
+            // 
+            // grafico
+            // 
+            this.helpProvider1.SetHelpString(this.grafico, "Apaga todos os campos do programa");
+            this.grafico.Location = new System.Drawing.Point(6, 149);
+            this.grafico.Name = "grafico";
+            this.grafico.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.helpProvider1.SetShowHelp(this.grafico, true);
+            this.grafico.Size = new System.Drawing.Size(218, 31);
+            this.grafico.TabIndex = 11;
+            this.grafico.Text = "Gráfico";
+            this.grafico.UseVisualStyleBackColor = true;
+            this.grafico.Click += new System.EventHandler(this.grafico_Click);
             // 
             // pRef
             // 
@@ -150,7 +165,7 @@
             this.grauPoli.Size = new System.Drawing.Size(63, 20);
             this.grauPoli.TabIndex = 8;
             this.grauPoli.Value = new decimal(new int[] {
-            5,
+            6,
             0,
             0,
             0});
@@ -166,9 +181,9 @@
             // 
             // calc
             // 
-            this.calc.Location = new System.Drawing.Point(6, 131);
+            this.calc.Location = new System.Drawing.Point(6, 106);
             this.calc.Name = "calc";
-            this.calc.Size = new System.Drawing.Size(97, 37);
+            this.calc.Size = new System.Drawing.Size(102, 37);
             this.calc.TabIndex = 1;
             this.calc.Text = "Calcula";
             this.calc.UseVisualStyleBackColor = true;
@@ -177,11 +192,11 @@
             // reset
             // 
             this.helpProvider1.SetHelpString(this.reset, "Apaga todos os campos do programa");
-            this.reset.Location = new System.Drawing.Point(131, 131);
+            this.reset.Location = new System.Drawing.Point(122, 106);
             this.reset.Name = "reset";
             this.reset.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.helpProvider1.SetShowHelp(this.reset, true);
-            this.reset.Size = new System.Drawing.Size(97, 37);
+            this.reset.Size = new System.Drawing.Size(102, 37);
             this.reset.TabIndex = 2;
             this.reset.Text = "Reset";
             this.reset.UseVisualStyleBackColor = true;
@@ -322,6 +337,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox pRef;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button grafico;
     }
 }
 

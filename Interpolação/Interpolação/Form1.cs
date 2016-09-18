@@ -48,6 +48,7 @@ namespace Interpolação
             }
 
             ///Testes para Newton
+            /*
             x[0].Text = "-2";
             x[1].Text = "-1";
             x[2].Text = "0,5";
@@ -62,11 +63,11 @@ namespace Interpolação
             y[4].Text = "-1";
             y[5].Text = "0,5";
 
-            nPontos.Value = 6;
+            nPontos.Value = 6;*/
             
             
 
-            /*//Testes para Newton Gregory
+            //Testes para Newton Gregory
             x[0].Text = "-2";
             x[1].Text = "-1";
             x[2].Text = "0";
@@ -84,11 +85,11 @@ namespace Interpolação
             y[6].Text = "0,5";
 
             nPontos.Value = 7;
-            */
+            
 
             newton.Checked = true;
 
-            MessageBox.Show("Versão 3: \n-Agora é possível calcular o polinômio para graus menores do que (Pontos - 1)");
+            MessageBox.Show("Versão 3: \n-Agora é possível calcular o polinômio para graus menores do que (Pontos - 1)\n-Desenho de gráficos");
 
         } 
  
@@ -175,19 +176,20 @@ namespace Interpolação
             return fat;
         }
 //---------------------------------------------------------------------------------------------
-        private void passaTextValores() //Função que passa os valores dos TextBoxs para vetores de double
+        private bool passaTextValores() //Função que passa os valores dos TextBoxs para vetores de double
         {
             for (int i= 0;i< nPontos.Value; i++)
             {
                 if(x[i].Text == "" || y[i].Text == "")
                 {
                     MessageBox.Show("Preencha todos os espaços!","Erro",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                    return;
+                    return false;
                 }
 
                 valX[i] = Convert.ToDouble(x[i].Text);
                 valY[i, 0] = Convert.ToDouble(y[i].Text);
             }
+            return true;
         }
 //---------------------------------------------------------------------------------------------
         private void metodoNewton(int n)
@@ -227,7 +229,7 @@ namespace Interpolação
 
             }
 
-            polinomio += "(" + valY[0, n - 1].ToString();
+            polinomio += "*(" + valY[0, n - 1].ToString();
 
             for (i = 0; i < n - 1; i++)
             {
@@ -285,7 +287,7 @@ namespace Interpolação
 
             }
 
-            polinomio += "(" + (valY[0, n-1] / (fatorial((double)n-1) * Math.Pow(dif, i))).ToString();
+            polinomio += "*(" + (valY[0, n-1] / (fatorial((double)n-1) * Math.Pow(dif, i))).ToString();
             //polinomio += "{" + (valY[0, n]).ToString() + "/" + (fatorial((double)n - 1) + Math.Pow(dif, i)).ToString();
 
             for (i = 0; i < n - 1; i++)
@@ -420,6 +422,15 @@ namespace Interpolação
                 x[i].Text = "";
                 y[i].Text = "";
                 textEqu.Text = "";
+            }
+        }
+//----------------------------------------------------------------------------------------------
+        private void grafico_Click(object sender, EventArgs e)
+        {
+            if (passaTextValores() && textEqu.Text != "")
+            {
+                Grafico g = new Grafico(valX, valY, (double)nPontos.Value);
+                g.Show();
             }
         }
 //----------------------------------------------------------------------------------------------

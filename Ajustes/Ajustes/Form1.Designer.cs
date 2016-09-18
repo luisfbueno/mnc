@@ -52,6 +52,10 @@
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.graficoPoli = new System.Windows.Forms.Button();
+            this.graficoCurvas = new System.Windows.Forms.Button();
+            this.sistGauss = new System.Windows.Forms.RadioButton();
+            this.sistCholesky = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nPontos)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -140,6 +144,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.sistCholesky);
+            this.groupBox2.Controls.Add(this.sistGauss);
+            this.groupBox2.Controls.Add(this.graficoPoli);
             this.groupBox2.Controls.Add(this.calcPoli);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.panelPoli);
@@ -212,6 +219,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.graficoCurvas);
             this.groupBox3.Controls.Add(this.curvasCalc);
             this.groupBox3.Controls.Add(this.textR);
             this.groupBox3.Controls.Add(this.textB);
@@ -315,6 +323,48 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Equações:";
             // 
+            // graficoPoli
+            // 
+            this.graficoPoli.Location = new System.Drawing.Point(170, 20);
+            this.graficoPoli.Name = "graficoPoli";
+            this.graficoPoli.Size = new System.Drawing.Size(93, 23);
+            this.graficoPoli.TabIndex = 7;
+            this.graficoPoli.Text = "Gráfico";
+            this.graficoPoli.UseVisualStyleBackColor = true;
+            this.graficoPoli.Click += new System.EventHandler(this.graficoPoli_Click);
+            // 
+            // graficoCurvas
+            // 
+            this.graficoCurvas.Location = new System.Drawing.Point(326, 29);
+            this.graficoCurvas.Name = "graficoCurvas";
+            this.graficoCurvas.Size = new System.Drawing.Size(93, 23);
+            this.graficoCurvas.TabIndex = 8;
+            this.graficoCurvas.Text = "Gráfico";
+            this.graficoCurvas.UseVisualStyleBackColor = true;
+            this.graficoCurvas.Click += new System.EventHandler(this.graficoCurvas_Click);
+            // 
+            // sistGauss
+            // 
+            this.sistGauss.AutoSize = true;
+            this.sistGauss.Location = new System.Drawing.Point(269, 23);
+            this.sistGauss.Name = "sistGauss";
+            this.sistGauss.Size = new System.Drawing.Size(113, 17);
+            this.sistGauss.TabIndex = 9;
+            this.sistGauss.TabStop = true;
+            this.sistGauss.Text = "Sistema por Gauss";
+            this.sistGauss.UseVisualStyleBackColor = true;
+            // 
+            // sistCholesky
+            // 
+            this.sistCholesky.AutoSize = true;
+            this.sistCholesky.Location = new System.Drawing.Point(387, 23);
+            this.sistCholesky.Name = "sistCholesky";
+            this.sistCholesky.Size = new System.Drawing.Size(126, 17);
+            this.sistCholesky.TabIndex = 10;
+            this.sistCholesky.TabStop = true;
+            this.sistCholesky.Text = "Sistema por Cholesky";
+            this.sistCholesky.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -363,6 +413,10 @@
         private System.Windows.Forms.TextBox textR;
         private System.Windows.Forms.TextBox textB;
         private System.Windows.Forms.TextBox textA;
+        private System.Windows.Forms.Button graficoPoli;
+        private System.Windows.Forms.Button graficoCurvas;
+        private System.Windows.Forms.RadioButton sistCholesky;
+        private System.Windows.Forms.RadioButton sistGauss;
     }
 }
 

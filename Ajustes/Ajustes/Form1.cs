@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using info.lundin.math;
 
 namespace Ajustes
 {
@@ -93,7 +94,9 @@ namespace Ajustes
             y[10].Text = "0,57";
             y[11].Text = "0,84";
 
-            
+            sistGauss.Checked = true;
+
+            MessageBox.Show("Versão 2:\n\n-Desenho de gráficos\n-Opção de escolha do método de resolução do sistema");
         }
 
         private void cholesky(int n, double[,] a, double[] b, ref double[] x)
@@ -156,7 +159,7 @@ namespace Ajustes
             }
 
         }
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
         private void gauss(int n, double[,] a, double[] b, ref double[] x)
         {
             int i, j, k;
@@ -191,7 +194,7 @@ namespace Ajustes
             }
 
         }
-        //-------------------------------------------------------------------------------           
+//-------------------------------------------------------------------------------           
         private void minimosQuadrados()
         {
             int i, j;
@@ -241,16 +244,30 @@ namespace Ajustes
                 }
             }
 
-            cholesky(m, matrizCalc, somatorioVetB, ref vetSol);
-            //gauss(m, matrizCalc, somatorioVetB, ref vetSol);
+            if (sistCholesky.Checked)
+            {
+                cholesky(m, matrizCalc, somatorioVetB, ref vetSol);
+            }
+                
+            else if (sistGauss.Checked)
+            {
+                gauss(m, matrizCalc, somatorioVetB, ref vetSol);
+            }
+                
 
             for (i = 0; i < m; i++)
             {
                 a[i].Text = vetSol[i].ToString();
+    
+            }
+
+            if (Double.IsNaN(vetSol[0]))
+            {
+                MessageBox.Show("Ocorreu overflow ou indeterminação nos cálculos, tente resolver o sistema por outro método!", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
         }
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
         private void minimosQuadradosComR(int curva)
         {
             int i, j;
@@ -699,7 +716,32 @@ namespace Ajustes
 
         }
 
-        //FUNCÕES DE INTERFACE
+//FUNCÕES DE INTERFACE
+        private void ordenaPontos()
+        {
+            int n = (int)nPontos.Value;
+            bool troca = true;
+            for (int i = 0; i < n && troca; i++)
+            {
+                troca = false;
+                for (int j = 0; j < n - i - 1; j++)
+                {
+                    if (valX[j] > valX[j + 1])
+                    {
+                        troca = true;
+                        double aux = valX[j];
+                        valX[j] = valX[j + 1];
+                        valX[j + 1] = aux;
+
+                        aux = valY[j];
+                        valY[j] = valY[j + 1];
+                        valY[j + 1] = aux;
+                    }
+                }
+                
+            }
+        }
+//-------------------------------------------------------------------------------
         private bool passaTextDouble()
         {
             for(int i = 0; i < n; i++)
@@ -731,11 +773,70 @@ namespace Ajustes
                     return;
                 }
 
+                ordenaPontos();
+
                 minimosQuadradosComR(comboBox1.SelectedIndex);
 
 
 
             }
+        }
+//-------------------------------------------------------------------------------
+        private void graficoPoli_Click(object sender, EventArgs e)
+        {
+            string f = "";
+
+            for (int i = 0; i < (int)grauPoli.Value + 1; i++)
+            {
+                if(a[i].Text == "")
+                {
+                    MessageBox.Show("Calcule as constantes primeiro!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            if (!passaTextDouble()){
+                return;
+            }
+
+            
+            for (int i = 0; i < (int)grauPoli.Value+1; i++)
+            {
+                if (i == 0)
+                {
+                    f += a[i].Text + 0;
+                }
+                else
+                {
+                    f+= " + " + a[i].Text +i+" * x^"+i; 
+                }
+            }
+
+            ProgramaGrafico g = new ProgramaGrafico(f, valX, (int)nPontos.Value);
+            g.Show();
+
+        }
+//-------------------------------------------------------------------------------
+        private void graficoCurvas_Click(object sender, EventArgs e)
+        {
+            if(textA.Text != "" && textB.Text != "" && comboBox1.Text != "" && passaTextDouble())
+            {
+                string f = comboBox1.Text;
+                f = f.Remove(0, 4);
+                double a = Double.Parse(textA.Text);
+                double b = Double.Parse(textB.Text);
+
+
+                ProgramaGrafico g = new ProgramaGrafico(f, a, b, valX,(int)nPontos.Value);
+                g.Show();
+            }
+            else
+            {
+                MessageBox.Show("Preencha todos os espaços!", "Erro!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+
+             
         }
 //-------------------------------------------------------------------------------
         private void calcPoli_Click(object sender, EventArgs e)
@@ -747,6 +848,8 @@ namespace Ajustes
             {
                 return;
             }
+
+            ordenaPontos();
 
             minimosQuadrados();
 
@@ -770,7 +873,7 @@ namespace Ajustes
             }
 
         }
-//-----------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
         private void nPontos_ValueChanged(object sender, EventArgs e)
         {
             for (int i = 0; i < nPontos.Value; i++)
