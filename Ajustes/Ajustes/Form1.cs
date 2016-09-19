@@ -201,10 +201,9 @@ namespace Ajustes
             double[] somatorioPotX = new double[15]; //Vetor que guarda os somatorios x(primeira posição guarda somatorio x^1)
             double[] somatorioVetB = new double[7];
             double[,] matrizCalc = new double[7, 7];
-            double[] vetCalc = new double[7];
             double[] vetSol = new double[7];
 
-            for (i = 0; i < m + m - 2; i++) //Calcula somatorios de x (vai até m+1 pois caso o grau seja 2 ele precisa calcular 
+            for (i = 0; i < n-1; i++) //Calcula somatorios de x (vai até m+1 pois caso o grau seja 2 ele precisa calcular 
             {
                 somatorioPotX[i] = 0;
                 for (j = 0; j < n; j++)

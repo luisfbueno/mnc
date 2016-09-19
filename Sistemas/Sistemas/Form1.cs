@@ -27,7 +27,6 @@ namespace Sistemas
             int i, j;
 
             for (i = 0; i < 10; i++) //instancia TextBoxes nos Panels e os deixa invisiveis
-
             {
                 vetB[i] = new TextBox();
                 vetB[i].Visible = false;
@@ -50,6 +49,7 @@ namespace Sistemas
             jacobi.Enabled = false;
 
             ShowBoxesPanel(3);
+
 
         }
 
@@ -97,6 +97,15 @@ namespace Sistemas
                 vetX[i].Text = x[i].ToString();
             }
 
+            if (det.Checked)
+            {
+                double det = 1;
+                for (i = 0; i < n; i++)
+                {
+                    det *= a[i, i];
+                }
+                MessageBox.Show("Determinante = " + det);
+            }
 
 
         }
@@ -109,6 +118,7 @@ namespace Sistemas
             double[,] g = new double[20, 20];
             double soma;
             double[] y = new double[20];
+            double[,] gUm = new double[20,20]; //Matriz que salva a matriz antes de fazer a inversa
 
             passaTextDouble();
             
@@ -124,7 +134,7 @@ namespace Sistemas
                 }
             }
 
-            for (k = 0; k < n; k++) //Decompor A em G*Gt
+            for (k = 0; k < n; k++) //Decompor A em G
             {
                 soma = 0;
                 for (j = 0; j <= k - 1; j++)
@@ -143,7 +153,7 @@ namespace Sistemas
                 }
             }
 
-            y[0] = b[0] / g[0, 0];
+            y[0] = b[0] / g[0, 0]; //Calcula o valor de y com g
             for (i = 1; i < n; i++)
             {
                 soma = 0;
@@ -154,10 +164,11 @@ namespace Sistemas
                 y[i] = (b[i] - soma) / g[i, i];
             }
 
-            for (i = 0; i < n; i++)
+            for (i = 0; i < n; i++) //Inverte G para calcular X
             {
                 for (j = i + 1; j < n; j++)
                 {
+                    gUm[i, j] = g[i, j];
                     g[i, j] = g[j, i];
                     g[j, i] = 0;
                 }
@@ -178,6 +189,17 @@ namespace Sistemas
             for (i = 0; i < n; i++)
             {
                 vetX[i].Text = x[i].ToString();
+            }
+
+            if (det.Checked)
+            {
+                double detg = 1, detgi = 1;
+                for (i = 0; i < n; i++)
+                {
+                    detg *= g[i, i];
+                    detgi += gUm[i, i];
+                }
+                MessageBox.Show("Determinante = " + (detg * detgi));
             }
 
         }
@@ -240,6 +262,16 @@ namespace Sistemas
                 vetX[i].Text = x[i].ToString();
             }
 
+            if (det.Checked)
+            {
+                double det = 1;
+                for (i = 0; i < n; i++)
+                {
+                    det *= a[i, i];
+                }
+                MessageBox.Show("Determinante = " + det);
+            }
+
         }
 //------------------------------------------------------------------------------
         private void metLU()
@@ -253,37 +285,41 @@ namespace Sistemas
 
             passaTextDouble();
             
-            for (k = 0;k< n; k++)
+            for (k = 0;k< n; k++) //Preenche diagonal com 1
             {
                 L[k, k] = 1;
             }
 
-           
-            for (k = 0; k < n; i++)
+
+            for (i = 0; i < n; i++) //Preenche as matrizes U e L
             {
-                for (i = 0; i < n; j++)
+                for (j = i; j < n; j++)
                 {
-                    soma = 0;
-                    for (k = 0; k < i - 1; k++)
+                    U[i, j] = a[i, j];
+                    for (k = 0; k < i; k++)
                     {
-                        soma += L[i, k] * U[k, j];
-                    }
-                    U[i, j] = a[i, j] - soma;
-                    MessageBox.Show("u[" + i + j + "] =" + U[i, j]);
+                        U[i, j] -= L[i, k] * U[k, j];
+                    }   
                 }
                 for (j = i + 1; j < n; j++)
                 {
-                    soma = 0;
-                    for (k = 0; k < i - 1; k++)
+                    L[j, i] = a[j, i];
+                    for (k = 0; k < i; k++)
                     {
-                        soma += L[j, k] * U[k, i];
+                        L[j, i] -= L[j, k] * U[k, i];
                     }
-                    L[j, i] = (a[j, i] - soma) / U[i, i];
-                    MessageBox.Show("l[" + j + i + "] =" + U[j, i]);
+                    if(U[i,i]!=0)
+                        L[j, i] /= U[i, i];
+                    else
+                    {
+                        MessageBox.Show("Ocorreu divisão por zero!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
                 }
             }
 
             y[0] = b[0] / L[0, 0];
+            MessageBox.Show("y0=" + y[0]);
             for (i = 1; i < n; i++)
             {
                 soma = 0;
@@ -292,9 +328,11 @@ namespace Sistemas
                     soma += L[i, j] * y[j];
                 }
                 y[i] = (b[i] - soma) / L[i, i];
+                MessageBox.Show("y"+i+"= " + y[i]);
             }
 
             x[n - 1] = y[n - 1] / U[n - 1, n - 1];
+            MessageBox.Show("xn-1=" + x[n-1]);
             for (i = n - 2; i >= 0; i--)
             {
                 soma = 0;
@@ -303,7 +341,7 @@ namespace Sistemas
                     soma += U[i, j] * x[j];
                 }
                 x[i] = (y[i] - soma) / U[i, i];
-                //vetX[i].Text = Math.Round(x[i]).ToString();
+                MessageBox.Show("x" + i + "= " + x[i]);
             }
 
             for (i = 0; i < n; i++)
@@ -311,8 +349,20 @@ namespace Sistemas
                 vetX[i].Text = x[i].ToString();
             }
 
+            if (det.Checked) //Se determinante selecionado, mostra determinante
+            {
+                double detl = 1, detu = 1;
+                for (i = 0; i < n; i++)
+                {
+                    detl *= L[i, i];
+                    detu += U[i, i];
+                }
+                MessageBox.Show("Determinante = " + (detl * detu));
+            }
+
         }
 //------------------------------------------------------------------------------
+       
         private bool verificaDiagonalPrincipal(ref double[,] mat,ref double[] vet,int n) //Função que verifica se tem 0 na diagonal principal e efetua trocas
         {
             int linha, coluna,i,j,k;
@@ -382,7 +432,7 @@ namespace Sistemas
                         return;
                     }
                 }
-                
+                x[i] = 0;
             }
         }
 //-----------------------------------------------------------------------------  

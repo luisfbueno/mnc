@@ -297,6 +297,19 @@ namespace Integrais
             }
                 
         }
+//------------------------------------------------------------------
+        private void QuadraturaGaussiana()
+        {
+            ExpressionParser parser = new ExpressionParser();
+
+            if(n > 5)
+            {
+                MessageBox.Show("O valor de n tem que ser entre 1 e 5","Erro",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return;
+            }
+
+
+        }
 
         //FUNÇÕES DE INTERFACE
         private void button1_Click(object sender, EventArgs e)

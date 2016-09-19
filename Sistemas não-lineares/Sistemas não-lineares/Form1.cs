@@ -70,7 +70,7 @@ namespace Sistemas_não_lineares
             newton.Checked = true;
         }
 
-
+//FUNÇÕES DE CÁLCULO
         private void gauss(int n, double[,] a, double[] b, ref double[] x)
         {
             int i, j, k;
@@ -279,7 +279,13 @@ namespace Sistemas_não_lineares
 
             for(int i = 0; i < n; i++)
             {
-                parser.Values["x" + (i + 1)].SetValue(x[i]);    
+                parser.Values["x" + (i + 1)].SetValue(x[i]);  
+                
+                if(Double.IsInfinity(x[i]) || Double.IsNaN(x[i])) {
+
+                    MessageBox.Show("Ocorreu indeterminação ou overflow durante os cálculos, tente alterar os valores ou trocar o método utilizado!", "Ops", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    return;
+                } 
             }
 
             for (int i = 0;i< n; i++)
@@ -361,6 +367,12 @@ namespace Sistemas_não_lineares
             for (int i = 0; i < n; i++)
             {
                 parser.Values["x" + (i + 1)].SetValue(x[i]);
+
+                if (Double.IsInfinity(x[i]) || Double.IsNaN(x[i]))
+                {
+                    MessageBox.Show("Ocorreu indeterminação ou overflow durante os cálculos, tente alterar os valores ou trocar o método utilizado!", "Ops", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    return;
+                }
             }
 
             for (int i = 0; i < n; i++)
@@ -374,6 +386,7 @@ namespace Sistemas_não_lineares
 
         }
 
+//FUNÇÕES DE INTERFACE
         private void ordemSist_ValueChanged(object sender, EventArgs e)
         {
             for (int i = 1; i <= 10; i++)
@@ -426,6 +439,8 @@ namespace Sistemas_não_lineares
                 Newton(n);
             else
                 NewtonModificado(n);
+
+
         }
 
 

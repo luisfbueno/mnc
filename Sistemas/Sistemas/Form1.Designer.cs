@@ -55,6 +55,7 @@
             this.vetBPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
             this.vetXPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.det = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ordemSist)).BeginInit();
@@ -188,6 +189,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.det);
             this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.reset);
             this.groupBox2.Controls.Add(this.ordemSist);
@@ -392,6 +394,16 @@
             this.vetXPanel.Size = new System.Drawing.Size(675, 26);
             this.vetXPanel.TabIndex = 6;
             // 
+            // det
+            // 
+            this.det.AutoSize = true;
+            this.det.Location = new System.Drawing.Point(13, 108);
+            this.det.Name = "det";
+            this.det.Size = new System.Drawing.Size(89, 17);
+            this.det.TabIndex = 9;
+            this.det.Text = "Determinante";
+            this.det.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -449,6 +461,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TableLayoutPanel vetXPanel;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox det;
     }
 }
 
