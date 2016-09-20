@@ -56,6 +56,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.vetXPanel = new System.Windows.Forms.TableLayoutPanel();
             this.det = new System.Windows.Forms.CheckBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.aprox = new System.Windows.Forms.TextBox();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ordemSist)).BeginInit();
@@ -91,6 +94,7 @@
             this.gaussSeidel.TabStop = true;
             this.gaussSeidel.Text = "Gauss-Seidel";
             this.gaussSeidel.UseVisualStyleBackColor = true;
+            this.gaussSeidel.CheckedChanged += new System.EventHandler(this.gaussSeidel_CheckedChanged);
             // 
             // jacobi
             // 
@@ -102,6 +106,7 @@
             this.jacobi.TabStop = true;
             this.jacobi.Text = "Jacobi-Richardson";
             this.jacobi.UseVisualStyleBackColor = true;
+            this.jacobi.CheckedChanged += new System.EventHandler(this.jacobi_CheckedChanged);
             // 
             // label5
             // 
@@ -153,6 +158,7 @@
             this.gaussComp.TabStop = true;
             this.gaussComp.Text = "Gauss Compacto";
             this.gaussComp.UseVisualStyleBackColor = true;
+            this.gaussComp.CheckedChanged += new System.EventHandler(this.gaussComp_CheckedChanged);
             // 
             // gaussPT
             // 
@@ -189,6 +195,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.aprox);
+            this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.det);
             this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.reset);
@@ -207,7 +215,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(225, 19);
+            this.button1.Location = new System.Drawing.Point(211, 19);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 8;
@@ -217,7 +225,7 @@
             // 
             // reset
             // 
-            this.reset.Location = new System.Drawing.Point(225, 50);
+            this.reset.Location = new System.Drawing.Point(211, 50);
             this.reset.Name = "reset";
             this.reset.Size = new System.Drawing.Size(75, 23);
             this.reset.TabIndex = 7;
@@ -397,12 +405,30 @@
             // det
             // 
             this.det.AutoSize = true;
-            this.det.Location = new System.Drawing.Point(13, 108);
+            this.det.Location = new System.Drawing.Point(211, 85);
             this.det.Name = "det";
             this.det.Size = new System.Drawing.Size(89, 17);
             this.det.TabIndex = 9;
             this.det.Text = "Determinante";
             this.det.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.helpProvider1.SetHelpString(this.label9, "Valor com que o vetor X inicial será preenchido para os métodos iterativos");
+            this.label9.Location = new System.Drawing.Point(13, 107);
+            this.label9.Name = "label9";
+            this.helpProvider1.SetShowHelp(this.label9, true);
+            this.label9.Size = new System.Drawing.Size(103, 13);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Aproximaçao para x:";
+            // 
+            // aprox
+            // 
+            this.aprox.Location = new System.Drawing.Point(127, 106);
+            this.aprox.Name = "aprox";
+            this.aprox.Size = new System.Drawing.Size(61, 20);
+            this.aprox.TabIndex = 11;
             // 
             // Form1
             // 
@@ -462,6 +488,9 @@
         private System.Windows.Forms.TableLayoutPanel vetXPanel;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox det;
+        private System.Windows.Forms.TextBox aprox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.HelpProvider helpProvider1;
     }
 }
 

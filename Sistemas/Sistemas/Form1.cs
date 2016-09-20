@@ -29,24 +29,22 @@ namespace Sistemas
             for (i = 0; i < 10; i++) //instancia TextBoxes nos Panels e os deixa invisiveis
             {
                 vetB[i] = new TextBox();
-                vetB[i].Visible = false;
+                vetB[i].Enabled = false;
                 vetBPanel.Controls.Add(vetB[i], i, 0);
                 vetX[i] = new TextBox();
-                vetX[i].Visible = false;             
+                vetX[i].Enabled = false;             
                 vetXPanel.Controls.Add(vetX[i], i, 0);
                 for (j = 0; j < 10; j++)
                 {
                     matA[i, j] = new TextBox();
-                    matA[i, j].Visible = false;
+                    matA[i, j].Enabled = false;
                     matAPanel.Controls.Add(matA[i, j], j, i);
                    // matA[i, j].Text = i.ToString() + j.ToString();
                 }
             }
 
-            gaussComp.Enabled = false;
             gaussPT.Enabled = false;
             gaussSeidel.Enabled = false;
-            jacobi.Enabled = false;
 
             ShowBoxesPanel(3);
 
@@ -319,7 +317,6 @@ namespace Sistemas
             }
 
             y[0] = b[0] / L[0, 0];
-            MessageBox.Show("y0=" + y[0]);
             for (i = 1; i < n; i++)
             {
                 soma = 0;
@@ -328,11 +325,9 @@ namespace Sistemas
                     soma += L[i, j] * y[j];
                 }
                 y[i] = (b[i] - soma) / L[i, i];
-                MessageBox.Show("y"+i+"= " + y[i]);
             }
 
             x[n - 1] = y[n - 1] / U[n - 1, n - 1];
-            MessageBox.Show("xn-1=" + x[n-1]);
             for (i = n - 2; i >= 0; i--)
             {
                 soma = 0;
@@ -341,7 +336,6 @@ namespace Sistemas
                     soma += U[i, j] * x[j];
                 }
                 x[i] = (y[i] - soma) / U[i, i];
-                MessageBox.Show("x" + i + "= " + x[i]);
             }
 
             for (i = 0; i < n; i++)
@@ -362,7 +356,189 @@ namespace Sistemas
 
         }
 //------------------------------------------------------------------------------
-       
+        private void metGaussCompacto()
+        {
+            double[,] LU = new double[20, 20];
+            int i,j,k;
+            int n = (int)ordemSist.Value;
+
+            passaTextDouble();
+
+            for (i = 0; i < n; i++) //Preenche as matrizes LU
+            {
+                for (j = i; j < n; j++)
+                {
+                    LU[i, j] = a[i, j];
+                    for (k = 0; k < i; k++)
+                    {
+                        LU[i, j] -= LU[i, k] * LU[k, j];
+                    }
+                }
+                for (j = i + 1; j < n; j++)
+                {
+                    LU[j, i] = a[j, i];
+                    for (k = 0; k < i; k++)
+                    {
+                        LU[j, i] -= LU[j, k] * LU[k, i];
+                    }
+                    if (LU[i, i] != 0)
+                        LU[j, i] /= LU[i, i];
+                    else
+                    {
+                        MessageBox.Show("Ocorreu divisão por zero!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+            }
+
+            for (i = 0; i < n; i++) //Efetua mudanças no vetor B
+            {
+                for (j = 0; j < n; j++)
+                {
+                    b[i] -= b[j] * LU[i, j];
+                }
+            }
+
+            double soma = 0; 
+            x[n - 1] = b[n - 1] / LU[n - 1, n - 1];
+            for (i = n - 2; i >= 0; i--)
+            {
+                soma = 0;
+                for (j = i + 1; j < n; j++)
+                {
+                    soma += LU[i, j] * x[j];
+                }
+                x[i] = (b[i] - soma) / LU[i, i];
+            }
+
+            for (i = 0; i < n; i++)
+            {
+                vetX[i].Text = x[i].ToString();
+            }
+
+        }
+//------------------------------------------------------------------------------
+        private void metJacobi(int iteracoes,double aprox,double epsilon)
+        {
+            double max;
+            int i, j, k;
+            int n = (int)ordemSist.Value;
+            bool cLinhas = false, cColunas = false;
+            double[] xini = new double[10];
+
+            passaTextDouble();
+
+            #region Critério das linhas e das colunas
+              //Critério das linhas
+              max = 0;
+              for (i = 0; i < n; i++)
+              {
+                  double aux = 0;
+                  for (j = 0; j < n; j++)
+                  {
+                      if (i != j)
+                      {
+                          aux += Math.Abs(a[i, j]);
+                      }
+                  }
+                  aux /= a[i, i];
+                  if(max < aux)
+                  {
+                      max = aux;
+                  }
+              }
+
+              if (max < 1)
+              {
+                  cLinhas = true;
+              }
+
+              //Critério das colunas
+              for (j = 0; j < n; j++)
+              {
+                  double aux = 0;
+                  for (i = 0; i < n; i++)
+                  {
+                      if (i != j)
+                      {
+                          aux += Math.Abs(a[i, j]);
+                      }
+                  }
+                  aux /= a[i, i];
+                  if (max < aux)
+                  {
+                      max = aux;
+                  }
+              }
+
+              if (max < 1)
+              {
+                  cColunas = true;
+              }
+
+              if(!cLinhas && !cColunas) //Se não atende aos critérios, interrompe e informa
+              {
+                  MessageBox.Show("Os valores não atendem ao critério das linhas e o das colunas", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                  return;
+              }
+            #endregion
+
+            for (i = 0; i < n; i++)
+            {
+                xini[i] = aprox;
+            }
+
+            int cont = 0;
+            bool achou = false;
+            while(!achou && cont < iteracoes)
+            {
+                for (i = 0; i < n; i++)
+                {
+                    double aux = 0;
+                    for (j = 0; j < n; j++)
+                    {
+                        if (j != i)
+                        {
+                            aux += a[i, j] * xini[j];
+                        }
+                    }
+                    x[i] = (b[i] - aux) / a[i, i];
+                }
+
+                //calcula vetor de diferenças
+                double[] vetdif = new double[10];
+                for (i = 0; i < n; i++)
+                {
+                    vetdif[i] = Math.Abs(xini[i] - x[i]);
+                }
+
+                if(vetdif.Max() < epsilon) //Se for menor que epsilon, achou
+                {
+                    achou = true;
+                }
+
+                for (i = 0; i < n; i++) //Passa o vetor encontrado para xini para usar no seguinte cálculo
+                {
+                    xini[i] = x[i];
+                }
+
+                cont++;
+            }
+
+            if (achou == true)
+            {
+                for (i = 0; i < n; i++)
+                {
+                    vetX[i].Text = x[i].ToString();
+                }
+            }
+            else
+            {
+                MessageBox.Show("O método não convergiu para o dado número de iterações", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+          }
+//------------------------------------------------------------------------------
         private bool verificaDiagonalPrincipal(ref double[,] mat,ref double[] vet,int n) //Função que verifica se tem 0 na diagonal principal e efetua trocas
         {
             int linha, coluna,i,j,k;
@@ -440,11 +616,11 @@ namespace Sistemas
         {
             for(int i = 0; i < n; i++)
             {
-                vetB[i].Visible = true;
-                vetX[i].Visible = true;
+                vetB[i].Enabled = true;
+                vetX[i].Enabled = true;
                 for (int j = 0; j < n; j++)
                 {
-                    matA[i, j].Visible = true;
+                    matA[i, j].Enabled = true;
                 }
             }
 
@@ -455,12 +631,12 @@ namespace Sistemas
         {
             for (int i = (int)ordemSist.Value; i < 10; i++)
             {
-                vetB[i].Visible = false;
-                vetX[i].Visible = false;
+                vetB[i].Enabled = false;
+                vetX[i].Enabled = false;
                 for (int j = 0; j < 10; j++)
                 {
-                    matA[i, j].Visible = false;
-                    matA[j, i].Visible = false;
+                    matA[i, j].Enabled = false;
+                    matA[j, i].Enabled = false;
                 }
             }
 
@@ -485,6 +661,17 @@ namespace Sistemas
             {
                 metLU();
             }
+            if (jacobi.Checked)
+            {
+                double eps = Double.Parse(tolerancia.Text);
+                if(eps<0.00001 || eps> 0.001)
+                {
+                    MessageBox.Show("Coloque um valor válido para a tolerância!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                metJacobi(int.Parse(numItera.Text), Double.Parse(aprox.Text), eps);
+            }
+
         }
 //------------------------------------------------------------------------------
         private void reset_Click(object sender, EventArgs e)
@@ -497,6 +684,42 @@ namespace Sistemas
                 {
                     matA[i, j].Text = "";
                 }
+            }
+        }
+//------------------------------------------------------------------------------
+        private void gaussComp_CheckedChanged(object sender, EventArgs e)
+        {
+            if (gaussComp.Checked)
+            {
+                det.Enabled = false;
+            }
+            else
+            {
+                det.Enabled = true;
+            }
+        }
+//------------------------------------------------------------------------------
+        private void jacobi_CheckedChanged(object sender, EventArgs e)
+        {
+            if (jacobi.Checked)
+            {
+                det.Enabled = false;
+            }
+            else
+            {
+                det.Enabled = true;
+            }
+        }
+//------------------------------------------------------------------------------
+        private void gaussSeidel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (gaussSeidel.Checked)
+            {
+                det.Enabled = false;
+            }
+            else
+            {
+                det.Enabled = true;
             }
         }
     }
