@@ -44,7 +44,7 @@ namespace Sistemas
             }
 
             gaussPT.Enabled = false;
-            gaussSeidel.Enabled = false;
+            //gaussSeidel.Enabled = false;
 
             ShowBoxesPanel(3);
 
@@ -66,7 +66,7 @@ namespace Sistemas
                 {
                     if (!verificaDiagonalPrincipal(ref a, ref b, n))
                     {
-                        MessageBox.Show("Ocorreu zero na diagonal principal e não foi possivel efetuar a troca!","Erro",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        MessageBox.Show("Ocorreu zero na diagonal principal e não foi possivel efetuar a troca!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -75,7 +75,7 @@ namespace Sistemas
                     multiplicador = a[i, j] / a[j, j];
                     for (k = j; k < n; k++)
                     {
-                        MessageBox.Show(a[i, k].ToString() + "-" + multiplicador.ToString() +"*"+ a[j, k].ToString());
+                        //MessageBox.Show(a[i, k].ToString() + "-" + multiplicador.ToString() + "*" + a[j, k].ToString());
                         a[i, k] -= multiplicador * a[j, k];
                     }
                     b[i] -= multiplicador * b[j];
@@ -105,7 +105,56 @@ namespace Sistemas
                 MessageBox.Show("Determinante = " + det);
             }
 
+            if (inversa.Checked)
+            {
+                double[] vetId = new double[10];
+                double[] vetSol = new double[10];
+                double[,] c = new double[10, 10];
 
+                for (i = 0; i < n; i++)
+                {
+
+                    for (j = 0; j < n; j++)//preenche vetor auxiliar de identidade
+                    {
+                        if (j == i)
+                        {
+                            vetId[j] = 1;
+                        }
+                        else
+                        {
+                            vetId[j] = 0;
+                        }
+                    }
+
+                    vetSol[n - 1] = vetId[n - 1] / a[n - 1, n - 1];
+                    for (j = n - 2; j >= 0; j--)
+                    {
+                        soma = 0;
+                        for (k = j + 1; k < n; k++)
+                        {
+                            soma += a[j, k] * vetSol[k];
+                        }
+                        vetSol[j] = (vetId[j] - soma) / a[j, j];
+                    }
+
+
+                    for (j = 0; j < n; j++)
+                    {
+                        c[j, i] = vetSol[j];
+                    }
+
+
+                }
+
+                for (i = 0; i < n; i++)
+                {
+                    for (j = 0; j < n; j++)
+                    {
+                        matA[i, j].Text = c[i, j].ToString();
+                    }
+                }
+
+            }
         }
 //-----------------------------------------------------------------------------
         private void metCholesky()
@@ -418,13 +467,12 @@ namespace Sistemas
 
         }
 //------------------------------------------------------------------------------
-        private void metJacobi(int iteracoes,double aprox,double epsilon)
+        private void metJacobi(int iteracoes,double[] xini,double epsilon)
         {
             double max;
             int i, j, k;
             int n = (int)ordemSist.Value;
             bool cLinhas = false, cColunas = false;
-            double[] xini = new double[10];
 
             passaTextDouble();
 
@@ -454,6 +502,7 @@ namespace Sistemas
               }
 
               //Critério das colunas
+              max = 0;
               for (j = 0; j < n; j++)
               {
                   double aux = 0;
@@ -483,10 +532,6 @@ namespace Sistemas
               }
             #endregion
 
-            for (i = 0; i < n; i++)
-            {
-                xini[i] = aprox;
-            }
 
             int cont = 0;
             bool achou = false;
@@ -538,6 +583,128 @@ namespace Sistemas
             }
 
           }
+//------------------------------------------------------------------------------
+        private void metGaussSeidel(int iteracoes, double[] xini, double epsilon)
+        {
+            double max;
+            int i, j, k;
+            int n = (int)ordemSist.Value;
+            bool cLinhas = false, cSassenfeld = false;
+
+            passaTextDouble();
+
+            #region Critério das linhas e Sassenfeld
+            //Critério das linhas
+            max = 0;
+            for (i = 0; i < n; i++)
+            {
+                double aux = 0;
+                for (j = 0; j < n; j++)
+                {
+                    if (i != j)
+                    {
+                        aux += Math.Abs(a[i, j]);
+                    }
+                }
+                aux /= a[i, i];
+                if (max < aux)
+                {
+                    max = aux;
+                }
+            }
+
+            if (max < 1)
+            {
+                cLinhas = true;
+            }
+
+            //Critério de Sassenfeld
+            max = 0;
+            double[] beta = new double[10];
+            for (i = 0; i < n; i++)
+            {
+                beta[i] = 0;
+                for (j = 0; j < n; j++)
+                {
+                    if (j > i)
+                    {
+                        beta[i] += a[i, j];
+                    }
+                    else if (i > j)
+                    {
+                        beta[i] += a[i, j] * beta[j];
+                    }
+                }
+                beta[i] /= a[i, i];
+                if (max < beta[i])
+                {
+                    max = beta[i];
+                }
+            }
+
+            if (max < 1)
+            {
+                cSassenfeld = true;
+            }
+
+            if (!cLinhas && !cSassenfeld) //Se não atende aos critérios, interrompe e informa
+            {
+                MessageBox.Show("Os valores não atendem ao critério das linhas e o das colunas", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            #endregion
+
+
+            int cont = 0;
+            bool achou = false;
+            while (!achou && cont < iteracoes)
+            {
+                for (i = 0; i < n; i++)
+                {
+                    double aux = 0;
+                    for (j = 0; j < n; j++)
+                    {
+                        if (j != i)
+                        {
+                            aux += a[i, j] * x[j];
+                        }
+                    }
+                    x[i] = (b[i] - aux) / a[i, i];
+                }
+
+                //calcula vetor de diferenças
+                double[] vetdif = new double[10];
+                for (i = 0; i < n; i++)
+                {
+                    vetdif[i] = Math.Abs(xini[i] - x[i]);
+                }
+
+                if (vetdif.Max() < epsilon) //Se for menor que epsilon, achou
+                {
+                    achou = true;
+                }
+
+                for (i = 0; i < n; i++) //Passa o vetor encontrado para xini para usar no seguinte cálculo
+                {
+                    xini[i] = x[i];
+                }
+
+                cont++;
+            }
+
+            if (achou == true)
+            {
+                for (i = 0; i < n; i++)
+                {
+                    vetX[i].Text = x[i].ToString();
+                }
+            }
+            else
+            {
+                MessageBox.Show("O método não convergiu para o dado número de iterações", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+        }
 //------------------------------------------------------------------------------
         private bool verificaDiagonalPrincipal(ref double[,] mat,ref double[] vet,int n) //Função que verifica se tem 0 na diagonal principal e efetua trocas
         {
@@ -642,7 +809,7 @@ namespace Sistemas
 
             ShowBoxesPanel((int)ordemSist.Value);
         }
-//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
         private void button1_Click(object sender, EventArgs e)
         {
             if (gaussSimples.Checked)
@@ -669,7 +836,41 @@ namespace Sistemas
                     MessageBox.Show("Coloque um valor válido para a tolerância!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                metJacobi(int.Parse(numItera.Text), Double.Parse(aprox.Text), eps);
+                double[] xini = new double[10];
+
+                for(int i = 0; i < (int)ordemSist.Value; i++)
+                {
+                    if(vetX[i].Text== "")
+                    {
+                        MessageBox.Show("Preencha todo o vetor X", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    xini[i] = Double.Parse(vetX[i].Text);
+                }
+
+
+                metJacobi(int.Parse(numItera.Text), xini, eps);
+            }
+            if (gaussSeidel.Checked)
+            {
+                double eps = Double.Parse(tolerancia.Text);
+                if (eps < 0.00001 || eps > 0.001)
+                {
+                    MessageBox.Show("Coloque um valor válido para a tolerância!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                double[] xini = new double[10];
+
+                for (int i = 0; i < (int)ordemSist.Value; i++)
+                {
+                    if (vetX[i].Text == "")
+                    {
+                        MessageBox.Show("Preencha todo o vetor X", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    xini[i] = Double.Parse(vetX[i].Text);
+                }
+
+                metGaussSeidel(int.Parse(numItera.Text), xini, eps);
             }
 
         }
@@ -704,6 +905,7 @@ namespace Sistemas
             if (jacobi.Checked)
             {
                 det.Enabled = false;
+                MessageBox.Show("Digite o vetor aproximado no espaço de solução do vetor x!", "Atençao", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
             else
             {
@@ -716,10 +918,24 @@ namespace Sistemas
             if (gaussSeidel.Checked)
             {
                 det.Enabled = false;
+                MessageBox.Show("Digite o vetor aproximado no espaço de solução do vetor x!", "Atençao", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
             else
             {
                 det.Enabled = true;
+            }
+        }
+//------------------------------------------------------------------------------
+        private void gaussSimples_CheckedChanged(object sender, EventArgs e)
+        {
+            if (gaussSimples.Checked)
+            {
+                inversa.Enabled = true;
+                inversa.Checked = false;
+            }
+            else
+            {
+                inversa.Enabled = false;
             }
         }
     }

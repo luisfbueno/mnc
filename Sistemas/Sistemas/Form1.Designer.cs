@@ -56,9 +56,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.vetXPanel = new System.Windows.Forms.TableLayoutPanel();
             this.det = new System.Windows.Forms.CheckBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.aprox = new System.Windows.Forms.TextBox();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+            this.inversa = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ordemSist)).BeginInit();
@@ -192,11 +191,11 @@
             this.gaussSimples.TabStop = true;
             this.gaussSimples.Text = "Gauss - Simples";
             this.gaussSimples.UseVisualStyleBackColor = true;
+            this.gaussSimples.CheckedChanged += new System.EventHandler(this.gaussSimples_CheckedChanged);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.aprox);
-            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.inversa);
             this.groupBox2.Controls.Add(this.det);
             this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.reset);
@@ -215,7 +214,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(211, 19);
+            this.button1.Location = new System.Drawing.Point(225, 35);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 8;
@@ -225,7 +224,7 @@
             // 
             // reset
             // 
-            this.reset.Location = new System.Drawing.Point(211, 50);
+            this.reset.Location = new System.Drawing.Point(225, 72);
             this.reset.Name = "reset";
             this.reset.Size = new System.Drawing.Size(75, 23);
             this.reset.TabIndex = 7;
@@ -235,7 +234,7 @@
             // 
             // ordemSist
             // 
-            this.ordemSist.Location = new System.Drawing.Point(127, 27);
+            this.ordemSist.Location = new System.Drawing.Point(153, 27);
             this.ordemSist.Maximum = new decimal(new int[] {
             10,
             0,
@@ -267,7 +266,7 @@
             // 
             // tolerancia
             // 
-            this.tolerancia.Location = new System.Drawing.Point(127, 79);
+            this.tolerancia.Location = new System.Drawing.Point(153, 79);
             this.tolerancia.Name = "tolerancia";
             this.tolerancia.Size = new System.Drawing.Size(61, 20);
             this.tolerancia.TabIndex = 6;
@@ -277,13 +276,13 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(10, 82);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 13);
+            this.label4.Size = new System.Drawing.Size(147, 13);
             this.label4.TabIndex = 5;
-            this.label4.Text = "Tolerância: ";
+            this.label4.Text = "Tolerância:(0,00001 a 0,001) ";
             // 
             // numItera
             // 
-            this.numItera.Location = new System.Drawing.Point(127, 53);
+            this.numItera.Location = new System.Drawing.Point(153, 53);
             this.numItera.Minimum = new decimal(new int[] {
             10,
             0,
@@ -405,30 +404,22 @@
             // det
             // 
             this.det.AutoSize = true;
-            this.det.Location = new System.Drawing.Point(211, 85);
+            this.det.Location = new System.Drawing.Point(18, 111);
             this.det.Name = "det";
             this.det.Size = new System.Drawing.Size(89, 17);
             this.det.TabIndex = 9;
             this.det.Text = "Determinante";
             this.det.UseVisualStyleBackColor = true;
             // 
-            // label9
+            // inversa
             // 
-            this.label9.AutoSize = true;
-            this.helpProvider1.SetHelpString(this.label9, "Valor com que o vetor X inicial será preenchido para os métodos iterativos");
-            this.label9.Location = new System.Drawing.Point(13, 107);
-            this.label9.Name = "label9";
-            this.helpProvider1.SetShowHelp(this.label9, true);
-            this.label9.Size = new System.Drawing.Size(103, 13);
-            this.label9.TabIndex = 10;
-            this.label9.Text = "Aproximaçao para x:";
-            // 
-            // aprox
-            // 
-            this.aprox.Location = new System.Drawing.Point(127, 106);
-            this.aprox.Name = "aprox";
-            this.aprox.Size = new System.Drawing.Size(61, 20);
-            this.aprox.TabIndex = 11;
+            this.inversa.AutoSize = true;
+            this.inversa.Location = new System.Drawing.Point(153, 111);
+            this.inversa.Name = "inversa";
+            this.inversa.Size = new System.Drawing.Size(61, 17);
+            this.inversa.TabIndex = 10;
+            this.inversa.Text = "Inversa";
+            this.inversa.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -488,9 +479,8 @@
         private System.Windows.Forms.TableLayoutPanel vetXPanel;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox det;
-        private System.Windows.Forms.TextBox aprox;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.HelpProvider helpProvider1;
+        private System.Windows.Forms.CheckBox inversa;
     }
 }
 
