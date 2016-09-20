@@ -45,6 +45,7 @@ namespace Sistemas
 
             gaussPT.Enabled = false;
             //gaussSeidel.Enabled = false;
+            inversa.Enabled = false;
 
             ShowBoxesPanel(3);
 
@@ -52,13 +53,60 @@ namespace Sistemas
         }
 
         //FUNÇÕES DE CALCULO
+        private void gauss(int n, double[,] a, double[] b, ref double[] x)
+        {
+            int i, j, k;
+            double multiplicador, soma;
+
+            for (j = 0; j < n - 1; j++)
+            {
+                for (i = j + 1; i < n; i++)
+                {
+                    multiplicador = a[i, j] / a[j, j];
+                    for (k = j; k < n; k++)
+                    {
+                        a[i, k] -= multiplicador * a[j, k];
+                        //MessageBox.Show("a[" + i.ToString() + "," + k.ToString() + "] = " + a[i, k]);
+                    }
+
+                    b[i] -= multiplicador * b[j];
+                    //MessageBox.Show("b[" + i.ToString() + "] = " + b[i]);
+                }
+
+            }
+
+            x[n - 1] = b[n - 1] / a[n - 1, n - 1];
+            for (i = n - 2; i >= 0; i--)
+            {
+                soma = 0;
+                for (j = i + i; j < n; j++)
+                {
+                    soma += a[i, j] * x[j];
+                }
+                x[i] = (b[i] - soma) / a[i, i];
+            }
+
+        }
+//-----------------------------------------------------------------------------
         private void metGauss()
         {
             int i, j, k;
             double multiplicador, soma;
             int n = (int)ordemSist.Value;
+            double[,] aOrig = new double[10, 10];
 
             passaTextDouble();
+
+            /*if (inversa.Checked)
+            {
+                for (i = 0; i < n; i++)
+                {
+                    for (j = 0; j < n; j++)
+                    {
+                        aOrig[i, j] = a[i, j];
+                    }
+                }
+            }*/
 
             for (j = 0; j < n - 1; j++)
             {
@@ -87,7 +135,7 @@ namespace Sistemas
             for (i = n - 2; i >= 0; i--)
             {
                 soma = 0;
-                for (j = i + i; j < n; j++)
+                for (j = i + 1; j < n; j++)
                 {
                     soma += a[i, j] * x[j];
                 }
@@ -105,14 +153,23 @@ namespace Sistemas
                 MessageBox.Show("Determinante = " + det);
             }
 
-            if (inversa.Checked)
+           /* if (inversa.Checked)
             {
                 double[] vetId = new double[10];
                 double[] vetSol = new double[10];
                 double[,] c = new double[10, 10];
+                double[,] mat = new double[10,10];
 
                 for (i = 0; i < n; i++)
                 {
+
+                    for (j = 0; j < n; j++)
+                    {
+                        for (k = 0; k < n; k++)
+                        {
+                            mat[i, j] = aOrig[i, j];
+                        }
+                    }
 
                     for (j = 0; j < n; j++)//preenche vetor auxiliar de identidade
                     {
@@ -124,18 +181,10 @@ namespace Sistemas
                         {
                             vetId[j] = 0;
                         }
+                        vetSol[i] = 0;
                     }
 
-                    vetSol[n - 1] = vetId[n - 1] / a[n - 1, n - 1];
-                    for (j = n - 2; j >= 0; j--)
-                    {
-                        soma = 0;
-                        for (k = j + 1; k < n; k++)
-                        {
-                            soma += a[j, k] * vetSol[k];
-                        }
-                        vetSol[j] = (vetId[j] - soma) / a[j, j];
-                    }
+                    gauss(n, mat, vetId, ref vetSol);
 
 
                     for (j = 0; j < n; j++)
@@ -154,7 +203,7 @@ namespace Sistemas
                     }
                 }
 
-            }
+            }*/
         }
 //-----------------------------------------------------------------------------
         private void metCholesky()
@@ -928,7 +977,7 @@ namespace Sistemas
 //------------------------------------------------------------------------------
         private void gaussSimples_CheckedChanged(object sender, EventArgs e)
         {
-            if (gaussSimples.Checked)
+            /*if (gaussSimples.Checked)
             {
                 inversa.Enabled = true;
                 inversa.Checked = false;
@@ -936,7 +985,7 @@ namespace Sistemas
             else
             {
                 inversa.Enabled = false;
-            }
+            }*/
         }
     }
 }
