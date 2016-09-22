@@ -108,11 +108,11 @@ namespace Interpolação
                     for (k = j; k < n; k++)
                     {
                         a[i, k] -= multiplicador * a[j, k];
-                        MessageBox.Show("a[" + i.ToString() + "," + k.ToString() + "] = " + a[i, k]);
+                        //MessageBox.Show("a[" + i.ToString() + "," + k.ToString() + "] = " + a[i, k]);
                     }
 
                     b[i] -= multiplicador * b[j];
-                    MessageBox.Show("b[" + i.ToString() + "] = " + b[i]);
+                    //MessageBox.Show("b[" + i.ToString() + "] = " + b[i]);
                 }
 
             }

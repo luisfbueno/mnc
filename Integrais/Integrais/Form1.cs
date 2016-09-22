@@ -21,19 +21,26 @@ namespace Integrais
         {
             InitializeComponent();
 
+            MessageBox.Show("Versão 2:\n\n-Quadratura Gaussiana para n de 1 a 8 adicionado");
+
             /*fx.Text = "sin(x)";
             valA.Text = "0";
             valB.Text = "1,0472";
             valN.Text = "5";
             tercoSimpson.Checked = true;*/
 
-            quadGauss.Enabled = false;
+            //quadGauss.Enabled = false;
         }
 
         private void MetodoRetanguloEsquerda()
         {
             double h = (b - a) / n;
             ExpressionParser parser = new ExpressionParser(); //Interpretador
+
+            if (func.Contains("e"))
+            {
+                parser.Values.Add("e", Math.E);
+            }
 
             double x = a;
             double somatorio = 0;
@@ -65,6 +72,11 @@ namespace Integrais
             double h = (b - a) / n;
             ExpressionParser parser = new ExpressionParser(); //Interpretador
 
+            if (func.Contains("e"))
+            {
+                parser.Values.Add("e", Math.E);
+            }
+
             double x = a+h;
             double somatorio = 0;
             parser.Values.Add("x", x);
@@ -94,6 +106,11 @@ namespace Integrais
         {
             double h = (b - a) / n;
             ExpressionParser parser = new ExpressionParser(); //Interpretador
+
+            if (func.Contains("e"))
+            {
+                parser.Values.Add("e", Math.E);
+            }
 
             double x = a + h;
 
@@ -129,6 +146,11 @@ namespace Integrais
         private void MetodoTercoSimpson()
         {
             ExpressionParser parser = new ExpressionParser();
+
+            if (func.Contains("e"))
+            {
+                parser.Values.Add("e", Math.E);
+            }
 
             if (n % 2 == 0) //Se n for par, somente aplicar 1/3 de simpson
             {
@@ -248,6 +270,11 @@ namespace Integrais
         {
             ExpressionParser parser = new ExpressionParser();
 
+            if (func.Contains("e"))
+            {
+                parser.Values.Add("e", Math.E);
+            }
+
             if (n % 3 != 0) //Se n não for múltiplo de 3, multiplica ele por 3
             {
                 n *= 3;
@@ -302,13 +329,162 @@ namespace Integrais
         {
             ExpressionParser parser = new ExpressionParser();
 
-            if(n > 5)
+            if(n > 8)
             {
-                MessageBox.Show("O valor de n tem que ser entre 1 e 5","Erro",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("O valor de n tem que ser entre 1 e 8","Erro",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return;
             }
 
+            double resu = 0;
 
+            if (func.Contains("e"))
+            {
+                parser.Values.Add("e", Math.E);
+            }
+
+            parser.Values.Add("x",0);
+
+            if(n == 1)
+            {
+                //0
+                parser.Values["x"].SetValue((0.5) * (b + a));
+                resu += 2* ((0.5) * (b - a) * parser.Parse(func));
+            }
+
+            if (n == 2)
+            {
+                //0
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.57735027) + (0.5) * (b + a));
+                resu += (0.5) * (b - a) * parser.Parse(func);
+                //1
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.57735027) + (0.5) * (b + a));
+                resu += (0.5) * (b - a) * parser.Parse(func);
+            }
+
+            else if (n == 3)
+            {
+                //0
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.77459667) + (0.5) * (b + a));
+                resu += (0.55555556) * ((0.5) * (b - a) * parser.Parse(func));
+                //1
+                parser.Values["x"].SetValue((0.5) * (b + a));
+                resu += (0.88888889) * ((0.5) * (b - a) * parser.Parse(func));
+                //2
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.77459667) + (0.5) * (b + a));
+                resu += (0.55555556) * ((0.5) * (b - a) * parser.Parse(func));
+            }
+
+            else if (n == 4)
+            {
+                //0
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.86113631) + (0.5) * (b + a));
+                resu += (0.34785484) * ((0.5) * (b - a) * parser.Parse(func));
+                //1
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.33998104) + (0.5) * (b + a));
+                resu += (0.65214516) * ((0.5) * (b - a) * parser.Parse(func));
+                //2
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.33998104) + (0.5) * (b + a));
+                resu += (0.65214516) * ((0.5) * (b - a) * parser.Parse(func));
+                //3
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.86113631) + (0.5) * (b + a));
+                resu += (0.34785484) * ((0.5) * (b - a) * parser.Parse(func));
+            }
+
+            else if (n == 5)
+            {
+                //0
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.90617985) + (0.5) * (b + a));
+                resu += (0.23692688) * ((0.5) * (b - a) * parser.Parse(func));
+                //1
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.53846931) + (0.5) * (b + a));
+                resu += (0.47862868) * ((0.5) * (b - a) * parser.Parse(func));
+                //2
+                parser.Values["x"].SetValue((0.5) * (b + a));
+                resu += (0.56888889) * ((0.5) * (b - a) * parser.Parse(func));
+                //3
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.53846931) + (0.5) * (b + a));
+                resu += (0.47862868) * ((0.5) * (b - a) * parser.Parse(func));
+                //4
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.90617985) + (0.5) * (b + a));
+                resu += (0.23692688) * ((0.5) * (b - a) * parser.Parse(func));
+            }
+
+            else if (n == 6)
+            {
+                //0
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.93246951) + (0.5) * (b + a));
+                resu += (0.17132450) * ((0.5) * (b - a) * parser.Parse(func));
+                //1
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.66120939) + (0.5) * (b + a));
+                resu += (0.36076158) * ((0.5) * (b - a) * parser.Parse(func));
+                //2
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.23861919) + (0.5) * (b + a));
+                resu += (0.46791394) * ((0.5) * (b - a) * parser.Parse(func));
+                //3
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.23861919) + (0.5) * (b + a));
+                resu += (0.46791394) * ((0.5) * (b - a) * parser.Parse(func));
+                //4
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.66120939) + (0.5) * (b + a));
+                resu += (0.36076158) * ((0.5) * (b - a) * parser.Parse(func));
+                //5
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.93246951) + (0.5) * (b + a));
+                resu += (0.17132450) * ((0.5) * (b - a) * parser.Parse(func));
+            }
+
+            else if (n == 7)
+            {
+                //0
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.94910791) + (0.5) * (b + a));
+                resu += (0.12948496) * ((0.5) * (b - a) * parser.Parse(func));
+                //1
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.74153119) + (0.5) * (b + a));
+                resu += (0.27970540) * ((0.5) * (b - a) * parser.Parse(func));
+                //2
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.40584515) + (0.5) * (b + a));
+                resu += (0.38183006) * ((0.5) * (b - a) * parser.Parse(func));
+                //3
+                parser.Values["x"].SetValue((0.5) * (b + a));
+                resu += (0.41795918) * ((0.5) * (b - a) * parser.Parse(func));
+                //4
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.40584515) + (0.5) * (b + a));
+                resu += (0.38183006) * ((0.5) * (b - a) * parser.Parse(func));
+                //5
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.74153119) + (0.5) * (b + a));
+                resu += (0.27970540) * ((0.5) * (b - a) * parser.Parse(func));
+                //6
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.94910791) + (0.5) * (b + a));
+                resu += (0.12948496) * ((0.5) * (b - a) * parser.Parse(func));
+            }
+
+            else if (n == 8)
+            {
+                //0
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.96028986) + (0.5) * (b + a));
+                resu += (0.10122854) * ((0.5) * (b - a) * parser.Parse(func));
+                //1
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.79666648) + (0.5) * (b + a));
+                resu += (0.22238104) * ((0.5) * (b - a) * parser.Parse(func));
+                //2
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.52553242) + (0.5) * (b + a));
+                resu += (0.31370664) * ((0.5) * (b - a) * parser.Parse(func));
+                //3
+                parser.Values["x"].SetValue((0.5) * (b - a) * (0.18343464) + (0.5) * (b + a));
+                resu += (0.36268378) * ((0.5) * (b - a) * parser.Parse(func));
+                //4
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.18343464) + (0.5) * (b + a));
+                resu += (0.36268378) * ((0.5) * (b - a) * parser.Parse(func));
+                //5
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.52553242) + (0.5) * (b + a));
+                resu += (0.31370664) * ((0.5) * (b - a) * parser.Parse(func));
+                //6
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.79666648) + (0.5) * (b + a));
+                resu += (0.22238104) * ((0.5) * (b - a) * parser.Parse(func));
+                //7
+                parser.Values["x"].SetValue((0.5) * (b - a) * (-0.96028986) + (0.5) * (b + a));
+                resu += (0.10122854) * ((0.5) * (b - a) * parser.Parse(func));
+            }
+
+            solucao.Text = resu.ToString();
         }
 
         //FUNÇÕES DE INTERFACE
@@ -338,6 +514,12 @@ namespace Integrais
                 a = double.Parse(valA.Text);
                 b = double.Parse(valB.Text);
                 n = double.Parse(valN.Text);
+                if (n < 0)
+                {
+                    MessageBox.Show("O valor de n tem que ser positivo!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
             }
 
 
@@ -376,6 +558,10 @@ namespace Integrais
             if (oitavoSimpson.Checked)
             {
                 MetodoOitavoSimpson();
+            }
+            if (quadGauss.Checked)
+            {
+                QuadraturaGaussiana();
             }
 
         }

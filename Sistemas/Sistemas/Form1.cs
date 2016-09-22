@@ -879,6 +879,11 @@ namespace Sistemas
             }
             if (jacobi.Checked)
             {
+                if(tolerancia.Text == "")
+                {
+                    MessageBox.Show("Preencha o valor da tolerância!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 double eps = Double.Parse(tolerancia.Text);
                 if(eps<0.00001 || eps> 0.001)
                 {
@@ -901,6 +906,11 @@ namespace Sistemas
             }
             if (gaussSeidel.Checked)
             {
+                if (tolerancia.Text == "")
+                {
+                    MessageBox.Show("Preencha o valor da tolerância!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 double eps = Double.Parse(tolerancia.Text);
                 if (eps < 0.00001 || eps > 0.001)
                 {

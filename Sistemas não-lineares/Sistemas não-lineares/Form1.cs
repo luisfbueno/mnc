@@ -68,9 +68,78 @@ namespace Sistemas_não_lineares
             epsilon.Text = "0,01";
 
             newton.Checked = true;
+
+            MessageBox.Show("Versão 2: \n-Agora o Newton Modificado resolve o sistema por LU e não por Gauss,otimizando os cálculos e a execução\n-Programa troca a matriz jacobiana a cada 5 iterações enquanto não convergir no método Newton Modificado");
         }
 
 //FUNÇÕES DE CÁLCULO
+        private void decomposicaoLU(ref double[,] L,ref double[,] U,int n,double[,] a)
+        {
+            int i, j, k;
+
+            for (k = 0; k < n; k++) //Preenche diagonal com 1
+            {
+                L[k, k] = 1;
+            }
+
+
+            for (i = 0; i < n; i++) //Preenche as matrizes U e L
+            {
+                for (j = i; j < n; j++)
+                {
+                    U[i, j] = a[i, j];
+                    for (k = 0; k < i; k++)
+                    {
+                        U[i, j] -= L[i, k] * U[k, j];
+                    }
+                }
+                for (j = i + 1; j < n; j++)
+                {
+                    L[j, i] = a[j, i];
+                    for (k = 0; k < i; k++)
+                    {
+                        L[j, i] -= L[j, k] * U[k, i];
+                    }
+                    if (U[i, i] != 0)
+                        L[j, i] /= U[i, i];
+                    else
+                    {
+                        MessageBox.Show("Ocorreu divisão por zero!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+            }
+        }
+//--------------------------------------------------------------------------------
+        private void resolveSistemasLU(double[,] L,double[,] U,int n,ref double[] x,double[] b)
+        {
+            double[] y = new double[10];
+            double soma;
+            int i, j;
+
+            y[0] = b[0] / L[0, 0];
+            for (i = 1; i < n; i++)
+            {
+                soma = 0;
+                for (j = i - 1; j >= 0; j--)
+                {
+                    soma += L[i, j] * y[j];
+                }
+                y[i] = (b[i] - soma) / L[i, i];
+            }
+
+            x[n - 1] = y[n - 1] / U[n - 1, n - 1];
+            for (i = n - 2; i >= 0; i--)
+            {
+                soma = 0;
+                for (j = i + 1; j < n; j++)
+                {
+                    soma += U[i, j] * x[j];
+                }
+                x[i] = (y[i] - soma) / U[i, i];
+            }
+        }
+//--------------------------------------------------------------------------------
         private void gauss(int n, double[,] a, double[] b, ref double[] x)
         {
             int i, j, k;
@@ -118,7 +187,7 @@ namespace Sistemas_não_lineares
             }
 
         }
-//---------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
         double f(string f,double val,int ind)
         {
             parser.Values["x" + ind].SetValue(val);
@@ -288,14 +357,18 @@ namespace Sistemas_não_lineares
                 } 
             }
 
-            for (int i = 0;i< n; i++)
+            if (cont < it)
             {
-                xifinal[i].Text = x[i].ToString();
-                double resu = parser.Parse(vetFx[i]);
-                fxifinal[i].Text = resu.ToString();
+                for (int i = 0; i < n; i++)
+                {
+                    xifinal[i].Text = x[i].ToString();
+                    double resu = parser.Parse(vetFx[i]);
+                    fxifinal[i].Text = resu.ToString();                 
+                }
+                MessageBox.Show("Iterações = " + cont.ToString());
             }
-
-            MessageBox.Show("Iterações = " + cont.ToString());
+            else
+                MessageBox.Show("O método não convergiu para este número de iterações!");
 
         }
 //---------------------------------------------------------------------------------
@@ -310,6 +383,8 @@ namespace Sistemas_não_lineares
             double[] xk = new double[10];
             double[] dif = new double[10];
             double[] moduloxk = new double[10];
+            double[,] l = new double[10, 10];
+            double[,] u = new double[10, 10];
 
             for (int i = 0; i < n; i++)
             {
@@ -317,7 +392,7 @@ namespace Sistemas_não_lineares
             }
 
  
-            for (int i = 0; i < n; i++) //Calcula matriz Jacobiana a ser usada em todos os métodos
+            for (int i = 0; i < n; i++) //Calcula matriz Jacobiana a ser usada em todos os métodos, até k
             {
                 for (int j = 0; j < n; j++)
                 {
@@ -327,8 +402,24 @@ namespace Sistemas_não_lineares
                 }
             }
 
+            decomposicaoLU(ref l, ref u, n, jacobiano);
+
             while (Math.Abs(parada) > eps && cont < it)
             {
+
+                if(cont%5 == 0)
+                {
+                    for (int i = 0; i < n; i++) //Calcula matriz Jacobiana a ser usada em todos os métodos, até k
+                    {
+                        for (int j = 0; j < n; j++)
+                        {
+                            jacobiano[i, j] = DerivadaParcial(vetFx[i], x, j);
+                            jacobiano[i, j] = Math.Round(jacobiano[i, j], 5);
+                            // MessageBox.Show("j" + i + j + " = " + jacobiano[i, j]);
+                        }   
+                    }
+                    decomposicaoLU(ref l, ref u, n, jacobiano);
+                }
 
                 for (int i = 0; i < n; i++) //Zerar vetor h para nao ocorrerem erros de calculo
                 {
@@ -342,7 +433,7 @@ namespace Sistemas_não_lineares
                     // MessageBox.Show("f" + i +" = " + F[i]);
                 }
 
-                gauss(n, jacobiano, F, ref h); //Resolve o sistema
+                resolveSistemasLU(l, u, n, ref h, F); //Resolve o sistema
 
                 for (int i = 0; i < n; i++)
                 {
@@ -375,14 +466,18 @@ namespace Sistemas_não_lineares
                 }
             }
 
-            for (int i = 0; i < n; i++)
+            if (cont < it)
             {
-                xifinal[i].Text = x[i].ToString();
-                double resu = parser.Parse(vetFx[i]);
-                fxifinal[i].Text = resu.ToString();
+                for (int i = 0; i < n; i++)
+                {
+                    xifinal[i].Text = x[i].ToString();
+                    double resu = parser.Parse(vetFx[i]);
+                    fxifinal[i].Text = resu.ToString();
+                }
+                MessageBox.Show("Iterações = " + cont.ToString());
             }
-
-            MessageBox.Show("Iterações = " + cont.ToString());
+            else
+                MessageBox.Show("O método não convergiu para este número de iterações!");
 
         }
 
