@@ -69,10 +69,65 @@ namespace Sistemas_não_lineares
 
             newton.Checked = true;
 
-            MessageBox.Show("Versão 2: \n-Agora o Newton Modificado resolve o sistema por LU e não por Gauss,otimizando os cálculos e a execução\n-Programa troca a matriz jacobiana a cada 5 iterações enquanto não convergir no método Newton Modificado");
+            MessageBox.Show("Versão 3: \n-Correção de problemas com resolução de sistemas");
         }
 
-//FUNÇÕES DE CÁLCULO
+        //FUNÇÕES DE CÁLCULO
+        private void metGaussPP(int n, double[,] a, double[] b, ref double[] x)
+        {
+            int i, j, k;
+            double multiplicador, soma;
+
+            for (j = 0; j < n - 1; j++)
+            {
+                int linhaMaximo = j;
+                for (int linha = j + 1; linha < n; linha++) //Verifica o maximo na coluna j
+                {
+                    if (a[linha, j] > a[linhaMaximo, j])
+                    {
+                        linhaMaximo = linha;
+                    }
+                }
+
+                if (linhaMaximo != j) //Se a linha do maximo for maior do que j,troca a linha j com a linha do valor maximo da coluna
+                {
+                    double aux = 0;
+                    for (int coluna = j; coluna < n; coluna++)
+                    {
+                        aux = a[j, coluna];
+                        a[j, coluna] = a[linhaMaximo, coluna];
+                        a[linhaMaximo, coluna] = aux;
+                    }
+                    aux = b[j];
+                    b[j] = b[linhaMaximo];
+                    b[linhaMaximo] = aux;
+                }
+
+                for (i = j + 1; i < n; i++)
+                {
+                    multiplicador = a[i, j] / a[j, j];
+                    for (k = j; k < n; k++)
+                    {
+                        //MessageBox.Show(a[i, k].ToString() + "-" + multiplicador.ToString() +"*"+ a[j, k].ToString());
+                        a[i, k] -= multiplicador * a[j, k];
+                    }
+                    b[i] -= multiplicador * b[j];
+                }
+            }
+
+            x[n - 1] = b[n - 1] / a[n - 1, n - 1];
+            for (i = n - 2; i >= 0; i--)
+            {
+                soma = 0;
+                for (j = i + i; j < n; j++)
+                {
+                    soma += a[i, j] * x[j];
+                }
+                x[i] = (b[i] - soma) / a[i, i];
+            }
+
+        }
+//--------------------------------------------------------------------------------
         private void decomposicaoLU(ref double[,] L,ref double[,] U,int n,double[,] a)
         {
             int i, j, k;
@@ -323,7 +378,7 @@ namespace Sistemas_não_lineares
                     }
                 }
 
-                gauss(n, jacobiano, F, ref h); //Resolve o sistema
+                metGaussPP(n, jacobiano, F, ref h); //Resolve o sistema
 
                 for(int i = 0; i < n; i++)
                 {
