@@ -1,0 +1,26 @@
+Este programa possui as seguintes funções, divididas em suas respectivas janelas:
+
+1. 'R->R': Esta janela possui as funções de cálculo das derivadas de primeira, segunda,
+ terceira e quarta ordem para funções de uma variável. Os dados de entrada são: f(x), 
+o valor de x e o valor de epsilon para os cálculos.
+
+2. 'Rn->R': Esta janela possui as funções de cálculo do Vetor Gradiente e Matriz Hessiana 
+para funções de n variáveis(n=2,3...,10). Os dados de entrada são: n números de variáveis 
+da função, f(x[1],...,x[n]),epsilon e o vetor de valores x[i](i de 1 até n). Para montar a
+matriz e o vetor para o n desejado, digite n e aperte o botão 'Monta' para gerá-los.
+
+3. 'Jacobiano': Esta janela possui as funções de cálculo da Matriz Jacobiana para um número m
+ de funções e n variáveis. Os dados de entrada são: o numero m de funções,o numero n de 
+variáveis, e as respectivas f(x[1],...,x[m]) e valores de x[i] (i de 1 ate n) em seus respectivos 
+espaços. Para montar a matriz e os vetores para o m e n desejados, digite os valores e aperte 
+o botão 'Monta' para gerá-los.
+
+Observações: 
+
+- Os valores decimais devem ser inseridos com o uso de ponto, e nao vírgula.
+		Ex: 4.55 -> correto
+		4,55 -> errado, o programa mostrará uma janela de erro neste caso. 
+		
+-Se por acaso um número tiver muitas casas após a vírgula e seu valor ficar escondido, é só 
+clicar no campo correspondente e ir apertando a tecla para a esquerda até que ele apareça
+completamente.

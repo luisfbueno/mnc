@@ -1,4 +1,4 @@
-# mnc
+# Métodos Numéricos Computacionais
 Trabalhos da disciplina de Métodos Numéricos Computacionais feitos em Java e C#
 
 * Derivadas - Java (Swing GUI)
